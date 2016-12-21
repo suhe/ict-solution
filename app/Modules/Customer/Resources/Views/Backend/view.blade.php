@@ -61,6 +61,10 @@
 							<td class="col-md-9">{!! $data->contact_person !!}</td>
 						</tr>
 						<tr>
+							<td class="col-md-3">{!! Lang::get('app.phone number') !!}</td>
+							<td class="col-md-9">{!! $data->phone_number !!}</td>
+						</tr>
+						<tr>
 							<td class="col-md-3">{!! Lang::get('app.position') !!}</td>
 							<td class="col-md-9">{!! $data->contact_position !!}</td>
 						</tr>

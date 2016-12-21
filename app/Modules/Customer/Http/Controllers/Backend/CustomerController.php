@@ -72,6 +72,7 @@ class CustomerController extends Controller {
 		$zip_code = Input::get('zip_code');
 		$customer_group_id = Input::get('customer_group_id');
 		$contact_person = Input::get('contact_person');
+		$phone_number = Input::get('phone_number');
 		$contact_position = Input::get('contact_position');
 		
         $field = array (
@@ -82,6 +83,7 @@ class CustomerController extends Controller {
 			'zip_code' => $zip_code,
 			'customer_group_id' => $customer_group_id,
 			'contact_person' => $contact_person,
+			'phone_number' => $phone_number,
 			'contact_position' => $contact_position,
         );
 
@@ -93,6 +95,7 @@ class CustomerController extends Controller {
 			'zip_code' => "required",
 			'customer_group_id' => "required",
 			'contact_person' => "required",
+			'phone_number' => "required",
 			'contact_position' => "required",
         );
 
@@ -125,6 +128,7 @@ class CustomerController extends Controller {
 			$customer->city_id  = $city_id;
 			$customer->zip_code  = $zip_code;
 			$customer->contact_person = $contact_person;
+			$customer->phone_number = $phone_number;
 			$customer->contact_position = $contact_position;
 			$customer->save();
 			
@@ -164,4 +168,16 @@ class CustomerController extends Controller {
 		
 		return Response::json($lists);
 	}
+	
+	public function do_delete(Customer $customer) {
+        $id = Crypt::decrypt(Input::get("id"));
+        $is_exists = $customer->select(['id'])->where('id',$id)->first();
+        if($is_exists) {
+            $customer->where(['id' => $id])->delete();
+            $params ['id'] =  $is_exists->id;
+            $params ['success'] =  true;
+            $params ['message'] =  Lang::get('info.delete successfully');
+        }
+        return Response::json($params);
+    }
 }

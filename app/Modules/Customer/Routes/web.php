@@ -20,4 +20,5 @@ Route::group(['prefix' => 'customer'], function () {
 	Route::get('/get/city', ['uses' => 'Backend\CustomerController@get_city']);
 	Route::get('/get/customer-group', ['uses' => 'Backend\CustomerController@get_customer_group']);
 	Route::post('/do-update', ['uses' => 'Backend\CustomerController@do_update']);
+	Route::post('/do-delete', ['uses' => 'Backend\CustomerController@do_delete']);
 });

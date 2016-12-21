@@ -68,6 +68,14 @@
 						{!! Form::text('contact_person',isset($data) ? $data->contact_person : null,['class' => 'form-control form-control-line','id'=>'contact_person','placeholder'=>lang::get('app.position'),'maxlength' => 100]) !!}
                     </div>
                 </div>
+				
+				<div class="form-group">
+                    <label class="col-md-12">{!! Lang::get('app.phone number') !!} <span class="help"> *</span></label>
+                    <div class="col-md-12">
+						{!! Form::text('phone_number',isset($data) ? $data->phone_number : null,['class' => 'form-control form-control-line','id'=>'phone_number','placeholder'=>lang::get('app.phone number'),'maxlength' => 18]) !!}
+                    </div>
+                </div>
+				
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.position') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">

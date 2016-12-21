@@ -33,7 +33,7 @@
 						</thead>
 						<tbody>
 							@foreach($customers as $key => $row)
-								<tr>
+								<tr class="row-{!! $row->id !!}">
 									<td>{!! $row->identity_number !!}</td>
 									<td>{!! $row->name !!}</td>
 									<td>{!! $row->contact_person !!}</td>
@@ -46,9 +46,8 @@
 											</button>
 											<ul class="dropdown-menu">
 												<li><a href="{!! url('/customer/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
-												<li><a href="{!! url('/customer/edit/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
+												<li><a href="{!! url('/customer/form/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
 												<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
-												
 											</ul>
 										</div>
 									</td>
@@ -62,3 +61,43 @@
 		</div>
 	</div>
 @endsection
+
+@push("scripts")
+<script type="text/javascript">
+$(function() {
+    $('.delete').on('click', function(event) {
+		event.preventDefault();
+		$("div#divLoading").addClass('show');
+		var id = $(this).attr("id");
+		$.confirm({
+			title: '{!! Lang::get("app.confirm") !!}',
+			content: '{!! Lang::get("info.confirm delete") !!}',
+			confirm: function(){
+				$.ajax({
+					type  : "post",
+					url   : "{!! url('/customer/do-delete') !!}",
+					data  : {id:id},
+					dataType: "json",
+					cache : false,
+					beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf_token"]').attr('content'))},
+					success : function(response) {
+						$("div#divLoading").removeClass('show');
+							if(response.success == true) {
+								$(".row-" + response.id).remove();
+							}
+
+						$.alert(response.message);
+					},
+					error : function() {
+						$("div#divLoading").removeClass('show');
+					}
+				});
+			},
+			cancel: function(){
+				$("div#divLoading").removeClass('show');
+			}
+		});
+    });
+});
+</script>
+@endpush
