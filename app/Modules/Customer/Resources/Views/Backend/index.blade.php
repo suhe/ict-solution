@@ -1,0 +1,64 @@
+@extends('ict-backend-theme::main_layout',['title' => $page_title])
+@section('content')
+	<div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h4 class="page-title"> {!! $page_title !!}</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+			<a href="{!! url('/customer/form') !!}" target="_blank" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
+			{!! Form::open(['url' => '/customer','method'=>'GET','class'=>'form-inline pull-right']) !!}
+				<div class="form-group">
+					<label>{!! Lang::get('app.search') !!}</label>
+					{!! Form::text('query',Request::get('query'),['class' => 'form-control input-sm','id'=>'query','placeholder'=>lang::get('app.keyword'),'maxlength'=>100]) !!}
+				</div>
+				<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> {!! Lang::get('app.search') !!}</button>
+			{!! Form::close()!!}
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+	  
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="white-box">
+				
+					<table class="table">
+						<thead>
+						  <tr>
+							<th>@sortablelink('identity_number', Lang::get('app.customer id'))</th>
+							<th>@sortablelink('name', Lang::get('app.name'))</th>
+							<th>@sortablelink('contact_person', Lang::get('app.contact person'))</th></th>
+							<th>@sortablelink('city_id', Lang::get('app.city'))</th></th>
+							<th class="text-center">{!! Lang::get('app.edit') !!}</th>
+						  </tr>
+						</thead>
+						<tbody>
+							@foreach($customers as $key => $row)
+								<tr>
+									<td>{!! $row->identity_number !!}</td>
+									<td>{!! $row->name !!}</td>
+									<td>{!! $row->contact_person !!}</td>
+									<td>{!! $row->city !!}</td>
+									<td class="text-center">
+										<div class="btn-group dropup m-r-10">
+											<button class="btn btn-sm btn-primary btn-rounded dropdown-toggle waves-effect waves-light" type="button" data-toggle="dropdown">
+												<i class="fa fa-pencil"> {!! Lang::get('app.edit') !!}</i>
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu">
+												<li><a href="{!! url('/customer/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
+												<li><a href="{!! url('/customer/edit/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
+												<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+												
+											</ul>
+										</div>
+									</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+					{!! $customers->appends(Request::except('page'))->render() !!}
+				
+			</div>
+		</div>
+	</div>
+@endsection
