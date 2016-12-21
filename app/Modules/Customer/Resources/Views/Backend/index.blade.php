@@ -5,7 +5,7 @@
           <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-			<a href="{!! url('/customer/form') !!}" target="_blank" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
+			<a href="{!! url('/customer/form') !!}" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
 			{!! Form::open(['url' => '/customer','method'=>'GET','class'=>'form-inline pull-right']) !!}
 				<div class="form-group">
 					<label>{!! Lang::get('app.search') !!}</label>

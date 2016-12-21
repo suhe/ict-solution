@@ -28,14 +28,17 @@
     <!-- Custom CSS -->
     <link href="{!! Theme::asset('css/style.css') !!}" rel="stylesheet">
     <!-- color CSS -->
-    <link href="{!! Theme::asset('css/colors/blue.css')!!}" id="theme" rel="stylesheet">
+    <link href="{!! Theme::asset('css/colors/blue.css')!!}" id="theme" rel="stylesheet" />
+	<link href="{!! Theme::asset('vendor/jquery-confirm/jquery-confirm.min.css')!!}" rel="stylesheet" />
+	
+	@stack('stylesheet')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="{!! Theme::asset('assets/vendor/ie/html5shiv.js')!!}"></script>
     <script src="{!! Theme::asset('assets/vendor/ie/respond.min.js')!!}"></script>
 <![endif]-->
-    <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    <!--<script src="http://www.w3schools.com/lib/w3data.js"></script>-->
 </head>
 
 <body>
@@ -43,6 +46,10 @@
     <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
+	<!-- Loading -->
+	<div id="divLoading">
+	</div>
+	
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -333,7 +340,10 @@
     <script src="../plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
     <script src="../plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
     <!--Style Switcher -->
-<script src="../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+	<script src="../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+	<script src="{!! Theme::asset('vendor/jquery-confirm/jquery-confirm.min.js')!!}"></script>
+	
+	@stack('scripts')
 </body>
 
 </html>
