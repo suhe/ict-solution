@@ -1,10 +1,14 @@
 <?php
 
 return [
+	'account' => "Account",
+	'account bank' => "Account Bank",
+	'accounting' => "Accounting",
 	'abodemen' => "Abodemen",
 	'address' => "Address",
 	'administration' => "Administration",
 	'back' => "Back",
+	'bank' => "Bank",
 	'business partner' => "Business partner",
 	'change password'=> "Change Password",
 	'city' => "City",
@@ -20,6 +24,7 @@ return [
 	'customer group' => "Customer Group",
 	'customer id' => "Customer ID",
 	'customer name' => "Customer Name",
+	'dashboard' => "Dashboard",
 	'delete' => "Delete",
 	'description' => "Description",
 	'detail' => "Detail",

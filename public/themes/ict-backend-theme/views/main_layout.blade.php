@@ -64,9 +64,10 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
-                    <li class="dropdown"> <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-envelope"></i>
-          <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-          </a>
+                    <li class="dropdown"> 
+						<a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-envelope"></i>
+							<div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+						</a>
                         <ul class="dropdown-menu mailbox animated bounceInDown">
                             <li>
                                 <div class="drop-title">You have 4 new messages</div>
@@ -102,9 +103,10 @@
                         <!-- /.dropdown-messages -->
                     </li>
                     <!-- /.dropdown -->
-                    <li class="dropdown"> <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-note"></i>
-          <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-          </a>
+                    <li class="dropdown"> 
+						<a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-note"></i>
+							<div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+						</a>
                         <ul class="dropdown-menu dropdown-tasks animated slideInUp">
                             <li>
                                 <a href="#">
@@ -187,15 +189,16 @@
                     <li class="sidebar-search hidden-sm hidden-md hidden-lg">
                         <!-- input-group -->
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search..."> <span class="input-group-btn">
-            <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-            </span> </div>
+                            <input type="text" class="form-control" placeholder="Search..."> 
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+							</span> 
+						</div>
                         <!-- /input-group -->
                     </li>
-                    <li> <a href="index.html" class="waves-effect active"><i class="linea-icon linea-basic fa-fw" data-icon="v"></i> <span class="hide-menu"> Dashboard <span class="fa arrow"></span> </span></a>
+                    <li> <a href="index.html" class="waves-effect active"><i class="linea-icon linea-basic fa-fw" data-icon="v"></i> <span class="hide-menu"> {!! Lang::get('app.dashboard')!!} <span class="fa arrow"></span> </span></a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="index.html">Minimalistic</a> </li>
-                            
+                            <li> <a href="{!! Lang::get('app.dashboard')!!}">{!! Lang::get('app.dashboard')!!} </a> </li>
                         </ul>
                     </li>
                     
@@ -210,6 +213,22 @@
                         <ul class="nav nav-second-level">
                             <li><a href="{!! url('telephone-billing') !!}">{!! Lang::get('app.telephone billing')!!}</a></li>
                             
+                        </ul>
+                    </li>
+					
+					<li> <a href="#" class="waves-effect"><i data-icon="F" class="linea-icon linea-software fa-fw"></i> <span class="hide-menu">{!! Lang::get('app.accounting')!!}<span class="fa arrow"></span></span></a>
+                        <ul class="nav nav-second-level">
+                            <li> <a href="#" class="waves-effect">{!! Lang::get('app.account')!!} <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li> <a href="{!! url('/account-bank') !!}">{!! Lang::get('app.account bank')!!}</a> </li>
+                                    <li> <a href="{!! url('/bank') !!}">{!! Lang::get('app.bank')!!}</a> </li>
+                                </ul>
+                            </li>
+							<li> <a href="#" class="waves-effect">{!! Lang::get('app.settings')!!} <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li> <a href="{!! url('/payment-method') !!}">{!! Lang::get('app.payment method')!!}</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     
