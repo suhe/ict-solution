@@ -14,7 +14,7 @@ use Validator;
 class SessionController extends Controller {
 	public function login() {
 		if(Auth::check()) 
-			return Redirect::intended('/user');	
+			return Redirect::intended('/profile');	
 		return Theme::view('session::Backend.login',[
 			'page_title' => Lang::get('app.login')
 		]);
@@ -45,13 +45,13 @@ class SessionController extends Controller {
             if(Auth::attempt($field,false) && $is_active_user) {
                 $params = array(
                     'success' => true,
-                    'redirect' => url("/dashboard"),
+                    'redirect' => url("/profile"),
                 );
             } else {
 				$params = array(
                     'success' => false,
                     'message' => array(
-                        'email' => Lang::get("session::message.wrong email or password")
+                        'email' => Lang::get("info.wrong email or password")
                     ),
                 );
                 

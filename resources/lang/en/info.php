@@ -6,5 +6,6 @@ return [
 	'delete successfully' => "Delete this data has been successfully",
 	'insert successfully' => "Insert new data has been successfully",
 	'update successfully' => "Update last data has been successfully",
+	'wrong email or password' => "Wrong email or password !",
 	
 ];

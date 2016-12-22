@@ -103,13 +103,13 @@ class UserController extends Controller {
 				//update user
 				$user = $user->find($user_id);
 				$user->updated_at = date("Y-m-d H:i:s");
-				$user->updated_by = 1;
+				$user->updated_by = Auth::user()->id;
 				$message = Lang::get('info.update successfully');
 			} else {
 				//insert new user
 				$user->password  = bcrypt($password);
 				$user->created_at = date("Y-m-d H:i:s");
-				$user->created_by = 1;
+				$user->created_by = Auth::user()->id;
 				$message =  Lang::get('info.insert successfully');
 			}
 			
@@ -185,7 +185,7 @@ class UserController extends Controller {
 			$user = $user->find($user_id);
 			$user->password  = bcrypt($password);
 			$user->updated_at = date("Y-m-d H:i:s");
-			$user->updated_by = 1;
+			$user->updated_by = Auth::user()->id;
 			$user->save();
 			
 			//params json

@@ -7,10 +7,10 @@
         <div class="col-lg-6">
 			<div class="pull-right">
 				<div class="btn-group">
-					@if(App::access('c','customer'))
+					@if(Role::access('c','customer'))
 					<a href="{!! url('/customer/form') !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-plus"></i> {!! Lang::get("app.create") !!}</a>
 					@endif
-					@if(App::access('u','customer'))
+					@if(Role::access('u','customer'))
 					<a href="{!! url('/customer/do-publish/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-flag"></i> {!! isset($data) && $data->is_active == 1 ? Lang::get("app.set inactive"): Lang::get("app.set active") !!}</a>
 					<a href="{!! url('/customer/form/'.Crypt::encrypt($data->id)) !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-pencil"></i> {!! Lang::get("app.edit") !!}</a>
 					@endif

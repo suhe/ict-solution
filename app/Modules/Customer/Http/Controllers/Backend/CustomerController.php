@@ -4,6 +4,7 @@ namespace App\Modules\Customer\Http\Controllers\Backend;
 use Illuminate\Routing\Controller;
 use App\Modules\City\City;
 use App\Modules\Customer\Customer;
+use Auth;
 use Config;
 use Crypt;
 use Input;
@@ -112,12 +113,12 @@ class CustomerController extends Controller {
 				//update Customer
 				$customer = $customer->find($customer_id);
 				$customer->updated_at = date("Y-m-d H:i:s");
-				//$customer->updated_by = Auth::user()->id;
+				$customer->updated_by = Auth::user()->id;
 				$message = Lang::get('info.update successfully');
 			} else {
 				//insert new Customer
 				$customer->created_at = date("Y-m-d H:i:s");
-				//$customer->created_by = Auth::user()->id;
+				$customer->created_by = Auth::user()->id;
 				$message =  Lang::get('info.insert successfully');
 			}
 			

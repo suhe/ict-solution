@@ -92,12 +92,12 @@ class UserGroupController extends Controller {
 				//update user
 				$user_group = $user_group->find($user_group_id);
 				$user_group->updated_at = date("Y-m-d H:i:s");
-				$user_group->updated_by = 1;
+				$user_group->updated_by = Auth::user()->id;
 				$message = Lang::get('info.update successfully');
 			} else {
 				//insert new user
 				$user_group->created_at = date("Y-m-d H:i:s");
-				$user_group->created_by = 1;
+				$user_group->created_by = Auth::user()->id;
 				$message =  Lang::get('info.insert successfully');
 			}
 			

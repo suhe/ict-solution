@@ -5,7 +5,9 @@
           <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+			@if(Role::access('c','user'))
 			<a href="{!! url('/user/form') !!}" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
+			@endif
 			{!! Form::open(['url' => '/user','method'=>'GET','class'=>'form-inline pull-right']) !!}
 				<div class="form-group">
 					<label>{!! Lang::get('app.search') !!}</label>
@@ -53,10 +55,10 @@
 										</button>
 										<ul class="dropdown-menu">
 											<li><a href="{!! url('/user/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
-											@if(App::access('u','user'))
+											@if(Role::access('u','user'))
 											<li><a href="{!! url('/user/form/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
 											@endif
-											@if(App::access('d','user'))
+											@if(Role::access('d','user'))
 												@if($row->id != 1)
 													<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
 												@endif

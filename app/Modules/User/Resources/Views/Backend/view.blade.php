@@ -7,10 +7,10 @@
         <div class="col-lg-6">
 			<div class="pull-right">
 				<div class="btn-group">
-					@if(App::access('c','user'))
+					@if(Role::access('c','user'))
 					<a href="{!! url('/user-group/form') !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-plus"></i> {!! Lang::get("app.create") !!}</a>
 					@endif
-					@if(App::access('u','user'))
+					@if(Role::access('u','user'))
 						@if($data->id!=1)
 							<a href="{!! url('/user/do-publish/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-flag"></i> {!! isset($data) && $data->is_active == 1 ? Lang::get("app.set inactive"): Lang::get("app.set active") !!}</a>
 							<a href="{!! url('/user/form/'.Crypt::encrypt($data->id)) !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-pencil"></i> {!! Lang::get("app.edit") !!}</a>
@@ -53,7 +53,7 @@
 							<td class="col-md-3">{!! Lang::get('app.email') !!}</td>
 							<td class="col-md-9">{!! $data->email !!}</td>
 						</tr>	
-						@if(App::access('u','user'))
+						@if(Role::access('u','user'))
 						<tr>
 							<td class="col-md-3">{!! Lang::get('app.password') !!}</td>
 							<td class="col-md-9"><a class="btn btn-default" href="{!! url('/user/reset-password/'.(Crypt::encrypt($data->id))) !!}">{!! Lang::get('app.reset password') !!}</a></td>

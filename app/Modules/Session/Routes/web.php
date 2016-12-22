@@ -14,4 +14,5 @@
 Route::group(['prefix' => 'session'], function () {
     Route::get('/login', ['uses' => 'Backend\SessionController@login']);
 	Route::post('/do-login', ['uses' => 'Backend\SessionController@do_login']);
+	Route::get('/logout', ['uses' => 'Backend\SessionController@logout']);
 });
