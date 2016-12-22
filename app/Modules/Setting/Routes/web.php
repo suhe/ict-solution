@@ -12,7 +12,6 @@
 */
 
 Route::group(['prefix' => 'setting'], function () {
-    Route::get('/', function () {
-        dd('This is the Setting module index page. Build something great!');
-    });
+    Route::get('/', ['uses' => 'Backend\SettingController@index']);
+	Route::post('/do-update', ['uses' => 'Backend\SettingController@do_update']);
 });

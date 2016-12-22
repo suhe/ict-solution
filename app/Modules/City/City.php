@@ -13,6 +13,15 @@ class City extends Model{
     public $timestamps = false;
 	public $sortable = ['name',];
 	
-	
+	public static function lists() {
+		$cities = self::where('is_active',1)->get();
+		$list = array();
+		if($$cities) {
+			foreach($cities as $key => $city) {
+				$list[$city->id] = $city->name;
+			}
+		}
+		return $list;
+	} 
  
 }

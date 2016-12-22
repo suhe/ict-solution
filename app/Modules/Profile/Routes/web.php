@@ -13,6 +13,6 @@
 
 Route::group(['prefix' => 'profile','middleware'=>['is_logged']], function () {
     Route::get('/', ['uses' => 'Backend\ProfileController@index']);
-	Route::post('/do-update', ['uses' => 'Backend\profileController@do_update']);
-	Route::post('/password/do-update', ['uses' => 'Backend\profileController@do_update_password']);
+	Route::post('/do-update', ['uses' => 'Backend\ProfileController@do_update']);
+	Route::post('/password/do-update', ['uses' => 'Backend\ProfileController@do_update_password']);
 });
