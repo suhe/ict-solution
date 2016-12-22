@@ -11,8 +11,12 @@
 |
 */
 
-Route::group(['prefix' => 'telephone-billing'], function () {
-    Route::get('/', function () {
-        dd('This is the Telephone Billing module index page. Build something great!');
-    });
+Route::group(['prefix' => 'telephone-billing','middleware'=>['is_logged']], function () {
+    Route::get('/', ['uses' => 'Backend\TelephoneBillingController@index','middleware' => ['role_read:telephone-billing']]);
+	Route::get('/view/{slug}', ['uses' => 'Backend\TelephoneBillingController@view','middleware' => ['role_read:telephone-billing']]);
+	Route::get('/do-publish/{slug}', ['uses' => 'Backend\TelephoneBillingController@do_publish','middleware' => ['role_update:telephone-billing']]);
+	Route::get('/form', ['uses' => 'Backend\TelephoneBillingController@form','middleware' => ['role_create:telephone-billing']]);
+	Route::get('/form/{slug}', ['uses' => 'Backend\TelephoneBillingController@form','middleware' => ['role_update:telephone-billing']]);
+	Route::post('/do-update', ['uses' => 'Backend\TelephoneBillingController@do_update','middleware' => ['role_update:telephone-billing']]);
+	Route::post('/do-delete', ['uses' => 'Backend\TelephoneBillingController@do_delete','middleware' => ['role_delete:telephone-billing']]);
 });
