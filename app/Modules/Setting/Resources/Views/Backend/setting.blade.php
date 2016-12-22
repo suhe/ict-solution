@@ -27,7 +27,7 @@
 							<div class="form-group">
 								<label class="col-md-12">{!! Lang::get('app.npwp') !!} <span class="help"> *</span></label>
 								<div class="col-md-12">
-									{!! Form::text('last_name',isset($company) ? $company->npwp : null,['class' => 'form-control form-control-line','id'=>'last_name','placeholder'=>lang::get('app.last name'),'maxlength' => 100]) !!}
+									{!! Form::text('npwp',isset($company) ? $company->npwp : null,['class' => 'form-control form-control-line','id'=>'last_name','placeholder'=>lang::get('app.npwp'),'maxlength' => 100]) !!}
 								</div>
 							</div>
 							
@@ -47,7 +47,7 @@
 							<div class="form-group">
 								<label class="col-md-12">{!! Lang::get('app.city') !!} <span class="help"> *</span></label>
 								<div class="col-md-12">
-									{!! Form::select('user_group_id',App\Modules\City\City::lists(),isset($company) ? $company->city_id : null,['class' => 'form-control form-control-line','id'=>'city_id']) !!}
+									{!! Form::select('city_id',App\Modules\City\City::lists(),isset($company) ? $company->city_id : null,['class' => 'form-control form-control-line','id'=>'city_id']) !!}
 								</div>
 							</div>
 							
@@ -59,7 +59,7 @@
 				
 							<div class="form-group">
 								<div class="col-sm-12">
-									<button class="btn btn-success" type="submit">{!! Lang::get('app.update profile') !!}</button>
+									<button class="btn btn-success" type="submit">{!! Lang::get('app.update') !!}</button>
 								</div>
 							</div>
 						{!! Form::close() !!}

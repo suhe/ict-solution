@@ -1,19 +1,19 @@
 <?php
-namespace App\Modules\City;
+namespace App\Modules\Company;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use Lang;
 
-class City extends Model{
+class Company extends Model{
 	use Sortable;
-    protected $table = 'cities';
+    protected $table = 'companies';
     protected $fillable = ['name','is_active'];
 	protected $primaryKey = "id";
     public $timestamps = false;
 	public $sortable = ['name',];
 	
-	public static function lists() {
+	/*public static function lists() {
 		$cities = self::where('is_active',1)->get();
 		$list = array();
 		if($cities) {
@@ -22,6 +22,6 @@ class City extends Model{
 			}
 		}
 		return $list;
-	} 
+	}*/ 
  
 }

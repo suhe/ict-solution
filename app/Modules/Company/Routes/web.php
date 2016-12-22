@@ -11,7 +11,8 @@
 |
 */
 
-Route::group(['prefix' => 'setting'], function () {
-    Route::get('/', ['uses' => 'Backend\SettingController@index']);
-	Route::post('/do-update/company', ['uses' => 'Backend\SettingController@do_update_company']);
+Route::group(['prefix' => 'company'], function () {
+    Route::get('/', function () {
+        dd('This is the Company module index page. Build something great!');
+    });
 });
