@@ -53,5 +53,9 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'is_logged' => \App\Http\Middleware\IsLogged::class,
+		'role_read' =>  \App\Http\Middleware\RoleRead::class,
+		'role_create' =>  \App\Http\Middleware\RoleCreate::class,
+		'role_update' =>  \App\Http\Middleware\RoleUpdate::class,
+		'role_delete' =>  \App\Http\Middleware\RoleDelete::class,
     ];
 }

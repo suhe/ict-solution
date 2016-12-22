@@ -53,9 +53,13 @@
 										</button>
 										<ul class="dropdown-menu">
 											<li><a href="{!! url('/user/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
+											@if(App::access('u','user'))
 											<li><a href="{!! url('/user/form/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
-											@if($row->id != 1)
-												<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+											@endif
+											@if(App::access('d','user'))
+												@if($row->id != 1)
+													<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+												@endif
 											@endif
 										</ul>
 									</div>

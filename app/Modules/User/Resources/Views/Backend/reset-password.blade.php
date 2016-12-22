@@ -9,7 +9,9 @@
         <div class="col-lg-6">
 			<div class="pull-right">
 				<div class="btn-group">
+					@if(App::access('u','user'))
 					<button class="btn btn-rounded btn-primary btn-md" type="submit"><i class="fa fa-save"></i> {!! Lang::get("app.submit") !!}</button>
+					@endif
 					<a href="{!! url()->previous() !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-undo"></i> {!! Lang::get("app.back") !!}</a>
                 </div>
 			</div>
