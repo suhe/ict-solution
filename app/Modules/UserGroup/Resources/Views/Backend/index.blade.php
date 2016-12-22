@@ -5,8 +5,8 @@
           <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-			<a href="{!! url('/customer/form') !!}" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
-			{!! Form::open(['url' => '/customer','method'=>'GET','class'=>'form-inline pull-right']) !!}
+			<a href="{!! url('/user-group/form') !!}" class="btn btn-primary btn-rounded pull-right m-l-20 btn-sm  hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-pencil"></i> {!! Lang::get('app.create') !!}</a>
+			{!! Form::open(['url' => '/user-group','method'=>'GET','class'=>'form-inline pull-right']) !!}
 				<div class="form-group">
 					<label>{!! Lang::get('app.search') !!}</label>
 					{!! Form::text('query',Request::get('query'),['class' => 'form-control input-sm','id'=>'query','placeholder'=>lang::get('app.keyword'),'maxlength'=>100]) !!}
@@ -23,21 +23,19 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>@sortablelink('identity_number', Lang::get('app.customer id'))</th>
-							<th>@sortablelink('name', Lang::get('app.name'))</th>
-							<th>@sortablelink('contact_person', Lang::get('app.contact person'))</th></th>
-							<th>@sortablelink('city_id', Lang::get('app.city'))</th></th>
-							<th class="text-center">{!! Lang::get('app.status') !!}</th>
-							<th class="text-center">{!! Lang::get('app.edit') !!}</th>
-						 </tr>
+							<th class="col-md-1">{!! Lang::get('app.no') !!}</th>
+							<th class="col-md-3">@sortablelink('name', Lang::get('app.name'))</th>
+							<th class="col-md-6">@sortablelink('description', Lang::get('app.description'))</th></th>
+							<th class="col-md-1 text-center">{!! Lang::get('app.status') !!}</th>
+							<th class="col-md-1 text-center">{!! Lang::get('app.edit') !!}</th>
+						</tr>
 					</thead>
 					<tbody>
-						@foreach($customers as $key => $row)
+						@foreach($user_groups as $key => $row)
 							<tr class="row-{!! $row->id !!}">
-								<td>{!! $row->identity_number !!}</td>
+								<td>{!! ($key + 1 + Request::get('page')) !!}</td>
 								<td>{!! $row->name !!}</td>
-								<td>{!! $row->contact_person !!}</td>
-								<td>{!! $row->city !!}</td>
+								<td>{!! $row->description !!}</td>
 								<td class="text-center">
 									@if($row->is_active == 1)
 										<center><i class="fa fa-check"></i></center>
@@ -52,9 +50,11 @@
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu">
-											<li><a href="{!! url('/customer/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
-											<li><a href="{!! url('/customer/form/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
-											<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+											<li><a href="{!! url('/user-group/view/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.view') !!}</a></li>
+											<li><a href="{!! url('/user-group/form/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.edit') !!}</a></li>
+											@if($row->id != 1)
+												<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+											@endif
 										</ul>
 									</div>
 								</td>
@@ -62,7 +62,7 @@
 						@endforeach
 					</tbody>
 				</table>
-				{!! $customers->appends(Request::except('page'))->render() !!}
+				{!! $user_groups->appends(Request::except('page'))->render() !!}
 			</div>
 		</div>
 	</div>
@@ -81,7 +81,7 @@ $(function() {
 			confirm: function(){
 				$.ajax({
 					type  : "post",
-					url   : "{!! url('/customer/do-delete') !!}",
+					url   : "{!! url('/user-group/do-delete') !!}",
 					data  : {id:id},
 					dataType: "json",
 					cache : false,

@@ -141,6 +141,18 @@ class CustomerController extends Controller {
         return Response::json($params);
 	}
 	
+	public function do_delete(Customer $customer) {
+        $id = Crypt::decrypt(Input::get("id"));
+        $is_exists = $customer->select(['id'])->where('id',$id)->first();
+        if($is_exists) {
+            $customer->where(['id' => $id])->delete();
+            $params ['id'] =  $is_exists->id;
+            $params ['success'] =  true;
+            $params ['message'] =  Lang::get('info.delete successfully');
+        }
+        return Response::json($params);
+    }
+	
 	public function get_city(Customer $customer) {
 		$id = Input::has('id') ? Crypt::decrypt(Input::get("id")) : 0;
 		$data = $customer->join('cities','cities.id','=','customers.city_id')
@@ -169,15 +181,5 @@ class CustomerController extends Controller {
 		return Response::json($lists);
 	}
 	
-	public function do_delete(Customer $customer) {
-        $id = Crypt::decrypt(Input::get("id"));
-        $is_exists = $customer->select(['id'])->where('id',$id)->first();
-        if($is_exists) {
-            $customer->where(['id' => $id])->delete();
-            $params ['id'] =  $is_exists->id;
-            $params ['success'] =  true;
-            $params ['message'] =  Lang::get('info.delete successfully');
-        }
-        return Response::json($params);
-    }
+	
 }
