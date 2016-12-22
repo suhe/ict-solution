@@ -11,8 +11,8 @@ class UserGroup extends Model {
     public $timestamps = false;
     public $sortable = ['id', 'name','description'];
 	
-	/*
-	public static function list_dropdown() {
+	
+	public static function lists() {
 		$user_groups = self::where('is_active',1)->get();
 		$list = array();
 		if($user_groups) {
@@ -21,5 +21,5 @@ class UserGroup extends Model {
 			}
 		}
 		return $list;
-	} */
+	} 
 }

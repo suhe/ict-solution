@@ -11,6 +11,6 @@
 |
 */
 
-Route::group(['prefix' => 'customer-group'], function () {
+Route::group(['prefix' => 'customer-group','middleware'=>['is_logged']], function () {
     Route::get('/lists', ['uses' => 'Backend\CustomerGroupController@lists']);
 });

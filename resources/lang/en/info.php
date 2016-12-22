@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'change password successfully' => "Change password successfully",
 	'confirm delete' => "Are you sure want to delete this item ? ",
 	'delete successfully' => "Delete this data has been successfully",
 	'insert successfully' => "Insert new data has been successfully",

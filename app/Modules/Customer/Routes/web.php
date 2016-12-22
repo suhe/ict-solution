@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'customer'], function () {
+Route::group(['prefix' => 'customer','middleware'=>['is_logged']], function () {
     Route::get('/', ['uses' => 'Backend\CustomerController@index']);
 	Route::get('/view/{slug}', ['uses' => 'Backend\CustomerController@view']);
 	Route::get('/do-publish/{slug}', ['uses' => 'Backend\CustomerController@do_publish']);

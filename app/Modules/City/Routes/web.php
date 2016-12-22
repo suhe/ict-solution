@@ -11,6 +11,6 @@
 |
 */
 
-Route::group(['prefix' => 'city'], function () {
+Route::group(['prefix' => 'city','middleware'=>['is_logged']], function () {
     Route::get('/lists', ['uses' => 'Backend\CityController@lists']);
 });

@@ -294,7 +294,7 @@
                             <li> <a href="javascript:void(0)">{!! Lang::get('app.site')!!}</a> </li>
                             <li> <a href="javascript:void(0)" class="waves-effect">{!! Lang::get('app.user & group')!!} <span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
-                                    <li> <a href="javascript:void(0)">{!! Lang::get('app.user')!!}</a> </li>
+                                    <li> <a href="{!! url('/user') !!}">{!! Lang::get('app.user')!!}</a> </li>
                                     <li> <a href="{!! url('/user-group') !!}">{!! Lang::get('app.group')!!}</a> </li>
                                 </ul>
                             </li>

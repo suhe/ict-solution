@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'user-group'], function () {
+Route::group(['prefix' => 'user-group','middleware'=>['is_logged']], function () {
     Route::get('/', ['uses' => 'Backend\UserGroupController@index']);
 	Route::get('/view/{slug}', ['uses' => 'Backend\UserGroupController@view']);
 	Route::get('/do-publish/{slug}', ['uses' => 'Backend\UserGroupController@do_publish']);
