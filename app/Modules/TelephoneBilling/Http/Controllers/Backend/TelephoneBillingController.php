@@ -64,7 +64,7 @@ class TelephoneBillingController extends Controller {
 	}
 	
 	public function do_update_line() {
-		$telephone_billing_id =  Input::has("id") ? Crypt::decrypt(Input::get("id")) : null;
+		$rowId =  Input::has("id") ? Input::get("id") : null;
 		$phone_number = Input::get('phone_number');
 		$period = Input::get('period');
 		$abodemen = Input::get('abodemen');
@@ -117,7 +117,7 @@ class TelephoneBillingController extends Controller {
                 'success' => false,
                 'message' => $validate->getMessageBag()->toArray()
             );
-		} else if($xperiod) {
+		} else if($xperiod && !$rowId) {
 			$params = array(
                 'success' => false,
                 'message' => [
@@ -130,35 +130,62 @@ class TelephoneBillingController extends Controller {
 			$ppn_total = ($ppn/100) * ($abodemen + $total + $surcharge_total);
 			$sub_total  = $abodemen + $total + $surcharge_total + $ppn_total;
 			
-			Cart::instance('line-form')->add([
-				'id' => $period,
-				'name' => $phone_number,
-				'qty' => 1,
-				'price' => 1,
-				'options' => [
-					'abodemen' => $abodemen,
-					'japati' => $japati,
-					'mobile' => $mobile,
-					'local' => $local,
-					'sljj' => $sljj,
-					'sli_007' => $sli_007,
-					'telkom_global_017' => $telkom_global_017,
-					'surcharge' => $surcharge_total,
-					'ppn' => $ppn_total,
-					'subtotal' => $sub_total,
-				]	
-			]);
-			
-			$rowId = "";
-			foreach(Cart::instance('line-form')->content() as $row) {
-				if($row->id == $period) {
-					$rowId = $row->rowId;
-					break;					
+			//Add New Cart Item
+			if(!$rowId) {
+				$is_edit = false;
+				Cart::instance('line-form')->add([
+					'id' => $period,
+					'name' => $phone_number,
+					'qty' => 1,
+					'price' => 1,
+					'options' => [
+						'abodemen' => $abodemen,
+						'japati' => $japati,
+						'mobile' => $mobile,
+						'local' => $local,
+						'sljj' => $sljj,
+						'sli_007' => $sli_007,
+						'telkom_global_017' => $telkom_global_017,
+						'surcharge' => $surcharge_total,
+						'ppn' => $ppn_total,
+						'subtotal' => $sub_total,
+					]	
+				]);
+				
+				$rowId = "";
+				foreach(Cart::instance('line-form')->content() as $row) {
+					if($row->id == $period) {
+						$rowId = $row->rowId;
+						break;					
+					}
 				}
+					
+			} else {
+				$is_edit = true;
+				 // Will update the line
+				Cart::instance('line-form')->update($rowId,[
+					'id' => $period,
+					'name' => $phone_number,
+					'qty' => 1,
+					'price' => 1,
+					'options' => [
+						'abodemen' => $abodemen,
+						'japati' => $japati,
+						'mobile' => $mobile,
+						'local' => $local,
+						'sljj' => $sljj,
+						'sli_007' => $sli_007,
+						'telkom_global_017' => $telkom_global_017,
+						'surcharge' => $surcharge_total,
+						'ppn' => $ppn_total,
+						'subtotal' => $sub_total,
+					]	
+				]);
 			}
 			
 			$params = array(
                 'success' => true,
+				'is_edit' => $is_edit,
 				'rowId' => $rowId,
                 'phone_number' => $phone_number,
 				'period' => $period,
@@ -176,6 +203,35 @@ class TelephoneBillingController extends Controller {
 			);
 		}
 		
+		return Response::json($params);
+	}
+	
+	public function view_line() {
+		$rowId = Input::get('id');
+		$row = Cart::instance('line-form')->get($rowId);
+		if($row) {
+			$params = [
+				'success' => true,
+				'rowId' => $row->rowId,
+                'phone_number' => $row->name,
+				'period' => $row->id,
+				'abodemen' => $row->options->abodemen,
+				'japati' => $row->options->japati,
+				'mobile' => $row->options->mobile,
+				'local' => $row->options->local,
+				'sljj' => $row->options->sljj,
+				'sli_007' => $row->options->sli_007,
+				'telkom_global_017' => $row->options->telkom_global_017,
+				'surcharge' => $row->options->surcharge,
+				'ppn' => $row->options->ppn,
+				'subtotal' => $row->options->sub_total,
+			];
+		} else {
+			$params = [
+				'success' => false,
+				'false' => Lang::get('info.failed to view'),
+			];
+		}
 		return Response::json($params);
 	}
 	

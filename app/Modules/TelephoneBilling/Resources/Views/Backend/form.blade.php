@@ -144,20 +144,20 @@
 								</thead>
 								<tbody>
 									@foreach(Cart::instance('line-form')->content() as $row)
-									<tr>
+									<tr id="{!! $row->rowId !!}">
 										<td class='text-center'> <span> <a class="line_edit" id="{!! $row->rowId !!}" href="#" ><i class='fa fa-pencil'></i> </a> &nbsp;  <a class='line_delete' id="{!! $row->rowId !!}" href='#'><i class='fa fa-trash'></i> </a></span></td>
-										<td>{!! $row->name !!}</td>
-										<td>{!! $row->id !!}</td>
-										<td class="text-right">{!! number_format($row->options->abodemen,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->japati,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->mobile,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->local,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->sljj,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->sli_007,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->telkom_global_017,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->surcharge,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->ppn,2) !!}</td>
-										<td class="text-right">{!! number_format($row->options->subtotal,2) !!}</td>
+										<td class="phone_number">{!! $row->name !!}</td>
+										<td class="period">{!! $row->id !!}</td>
+										<td class="abodemen text-right">{!! number_format($row->options->abodemen,2) !!}</td>
+										<td class="japati text-right">{!! number_format($row->options->japati,2) !!}</td>
+										<td class="mobile text-right">{!! number_format($row->options->mobile,2) !!}</td>
+										<td class="local text-right">{!! number_format($row->options->local,2) !!}</td>
+										<td class="sljj text-right">{!! number_format($row->options->sljj,2) !!}</td>
+										<td class="sli_007 text-right">{!! number_format($row->options->sli_007,2) !!}</td>
+										<td class="telkom_global_017 text-right">{!! number_format($row->options->telkom_global_017,2) !!}</td>
+										<td class="surcharge text-right">{!! number_format($row->options->surcharge,2) !!}</td>
+										<td class="ppn text-right">{!! number_format($row->options->ppn,2) !!}</td>
+										<td class="subtotal text-right">{!! number_format($row->options->subtotal,2) !!}</td>
 									</tr>
 									@endforeach	
 									
@@ -261,8 +261,21 @@ $(document).ready(function(){
 	$(".add-line").on('click', function(event){
 		event.preventDefault();
 		$('#line-form').modal('show');
+		$('#line-form #id').val(response.rowId);	
+		$('#line-form #phone_number').val("");
+		$('#line-form #period').val("");
+		$('#line-form #abodemen').val("0");
+		$('#line-form #japati').val("0");
+		$('#line-form #mobile').val("0");
+		$('#line-form #local').val("0");
+		$('#line-form #sljj').val("0");
+		$('#line-form #sli_007').val("0");
+		$('#line-form #telkom_global_017').val("0");
+		$('#line-form #surcharge').val("15");
+		$('#line-form #ppn').val("10");	
 	});
 	
+	//table_items edit
 	$("#table_items").on('click', '.line_edit', function(event) {
 		event.preventDefault();
 		$('#line-form').modal('show');
@@ -277,40 +290,32 @@ $(document).ready(function(){
 			beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf_token"]').attr('content'))},
 			success : function(response) {
 				if(response.success == true) {
+					$('#line-form #id').val(response.rowId);	
 					$('#line-form #phone_number').val(response.phone_number);
-					$('#armada-form #armada_id').val(response.armada_id);
-							$('#armada-form #driver_id').val(response.driver_id);
-							$('#armada-form #helper_id').val(response.helper_id);
-							$('#armada-form #hour_pick_up').val(response.hour_pick_up);
-							$('#armada-form #minute_pick_up').val(response.minute_pick_up);
-							$('#armada-form #km_start').val(response.km_start);
-							$('#armada-form #km_end').val(response.km_end);
-							$('#armada-form #driver_premi').val(response.driver_premi);
-							$('#armada-form #helper_premi').val(response.helper_premi);
-							$('#armada-form #operational_cost').val(response.operational_cost);
-							$('.op_subtotal').html(response.total_cost);
-							$('.op_subtotal').number(true,2);
-							$('#armada-form #bbm').val(response.bbm);
-							$('#armada-form #tol').val(response.tol);
-							$('#armada-form #parking_fee').val(response.parking_fee);
-							$('.op_subtotal_2').html(response.total_expense);
-							$('.op_subtotal_2').number(true,2);
-							$('.op_subtotal_3').html(response.saldo);
-							$('.op_subtotal_3').number(true,2);
-					$("div#modalLoading").removeClass('show');
-							
+					$('#line-form #period').val(response.period);
+					$('#line-form #abodemen').val(response.abodemen);
+					$('#line-form #japati').val(response.japati);
+					$('#line-form #mobile').val(response.mobile);
+					$('#line-form #local').val(response.local);
+					$('#line-form #sljj').val(response.sljj);
+					$('#line-form #sli_007').val(response.sli_007);
+					$('#line-form #telkom_global_017').val(response.telkom_global_017);
+					$('#line-form #surcharge').val(response.surcharge);
+					$('#line-form #ppn').val(response.ppn);	
 				}
+				
+				$("div#modalLoading").removeClass('show');
 
                                 
-                    },
-                    error : function() {
-                       $("div#divLoading").removeClass('show');
-                    }
-                });
-				return false;
-			});
+			},
+            error : function() {
+				$("div#divLoading").removeClass('show');
+            }
+        });
+		return false;
+	});
 			
-	//table_items
+	//table_items delete
 	$("#table_items").on('click', '.line_delete', function(event){
 		event.preventDefault();
 		var id = $(this).attr("id");

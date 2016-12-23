@@ -3,7 +3,6 @@
 		<div class="modal-content">
 			{!! Form::open(['url' => 'telephone-billing/do-update/line','id'=>'update_line_form','class'=>'form-material form-horizontal']) !!}
 			{!! Form::hidden('id', null, ['id' => 'id']) !!}
-			{!! Form::hidden('telephone_billing_id', isset($data) ?  Crypt::encrypt($data->id) : null, ['id' => 'telephone_billing_id']) !!}
 			
 			<div class="modal-header">
 			  <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -29,7 +28,7 @@
 						<div class="form-group">
 							<label class="col-md-12">{!! Lang::get('app.abodemen') !!} <span class="help"> *</span></label>
 							<div class="col-md-12">
-								{!! Form::text('abodemen',isset($data) ? $data->abodemen : 0,['class' => 'form-control form-control-line text-right','id'=>'abonemen','placeholder'=>'0','maxlength' => 100]) !!}
+								{!! Form::text('abodemen',isset($data) ? $data->abodemen : 0,['class' => 'form-control form-control-line text-right','id'=>'abodemen','placeholder'=>'0','maxlength' => 100]) !!}
 							</div>
 						</div>
 						<div class="form-group">
@@ -128,23 +127,38 @@ $(function() {
 						$(element).fadeIn();
 					});
 				} else {
-					var row = "";
-					row+="<tr>";
-					row+="<td class='text-center'> <span> <a class='line_edit' id ="+response.rowId+"' href='#'><i class='fa fa-pencil'></i> </a> &nbsp;  <a class='line_delete' id='"+response.rowId+"' href='#'><i class='fa fa-trash'></i> </a></span></td>";
-					row+="<td> " + response.phone_number + " </td>";
-					row+="<td> " + response.period + " </td>";
-					row+="<td class='text-right'>" + response.abodemen + " </td>";
-					row+="<td class='text-right'>" + response.japati + " </td>";
-					row+="<td class='text-right'>" + response.mobile + " </td>";
-					row+="<td class='text-right'>" + response.local + " </td>";
-					row+="<td class='text-right'>" + response.sljj + " </td>";
-					row+="<td class='text-right'>" + response.sli_007 + " </td>";
-					row+="<td class='text-right'>" + response.telkom_global_017 + " </td>";
-					row+="<td class='text-right'>" + response.surcharge + " </td>";
-					row+="<td class='text-right'>" + response.ppn + " </td>";
-					row+="<td class='text-right'>" + response.subtotal + " </td>";
-					row+="</tr>";
-					$('table#table_items tbody').prepend(row);
+					if(response.is_edit == false) {
+						var row = "";
+						row+="<tr>";
+						row+="<td class='text-center'> <span> <a class='line_edit' id ="+response.rowId+"' href='#'><i class='fa fa-pencil'></i> </a> &nbsp;  <a class='line_delete' id='"+response.rowId+"' href='#'><i class='fa fa-trash'></i> </a></span></td>";
+						row+="<td> " + response.phone_number + " </td>";
+						row+="<td> " + response.period + " </td>";
+						row+="<td class='text-right'>" + response.abodemen + " </td>";
+						row+="<td class='text-right'>" + response.japati + " </td>";
+						row+="<td class='text-right'>" + response.mobile + " </td>";
+						row+="<td class='text-right'>" + response.local + " </td>";
+						row+="<td class='text-right'>" + response.sljj + " </td>";
+						row+="<td class='text-right'>" + response.sli_007 + " </td>";
+						row+="<td class='text-right'>" + response.telkom_global_017 + " </td>";
+						row+="<td class='text-right'>" + response.surcharge + " </td>";
+						row+="<td class='text-right'>" + response.ppn + " </td>";
+						row+="<td class='text-right'>" + response.subtotal + " </td>";
+						row+="</tr>";
+						$('table#table_items tbody').prepend(row);
+					} else {
+						$('#'+response.rowId+' .phone_number').html(response.phone_number);
+						$('#'+response.rowId+' .period').html(response.period);
+						$('#'+response.rowId+' .abodemen').html(response.abodemen);
+						$('#'+response.rowId+' .japati').html(response.japati);
+						$('#'+response.rowId+' .mobile').html(response.mobile);
+						$('#'+response.rowId+' .local').html(response.local);
+						$('#'+response.rowId+' .sljj').html(response.sljj);
+						$('#'+response.rowId+' .sli_007').html(response.sli_007);
+						$('#'+response.rowId+' .telkom_global_017').html(response.telkom_global_017);
+						$('#'+response.rowId+' .surcharge').html(response.surcharge);
+						$('#'+response.rowId+' .ppn').html(response.ppn);
+						$('#'+response.rowId+' .subtotal').html(response.subtotal);
+					}
 					$('#line-form').modal('hide');
 				}
 			},
