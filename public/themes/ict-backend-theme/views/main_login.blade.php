@@ -47,7 +47,7 @@
 <script src="{!! Theme::asset('vendor/metis-menu/sidebar-nav.min.js') !!}"></script>
 
 <!--slimscroll JavaScript -->
-<script src="{!! Theme::asset('js/jquery.slimscroll.js') !!}"></script>
+<script src="{!! Theme::asset('vendor/jquery/jquery.slimscroll.js') !!}"></script>
 <!--Wave Effects -->
 <script src="{!! Theme::asset('js/waves.js') !!}"></script>
 <!-- Custom Theme JavaScript -->
