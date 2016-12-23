@@ -169,6 +169,7 @@ return [
 		Caffeinated\Modules\ModulesServiceProvider::class,
 		Caffeinated\Themes\ThemesServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+		Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 		Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
 
         //
@@ -203,6 +204,7 @@ return [
         'Blade' => Illuminate\Support\Facades\Blade::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
+		'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 		'Component' => Caffeinated\Themes\Facades\Component::class,
         'Config' => Illuminate\Support\Facades\Config::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,

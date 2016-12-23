@@ -127,6 +127,7 @@
 							<table id="table_items" class="table table-striped">
 								<thead>
 									<tr>
+										<th class="col-md-1 text-center">{!! Lang::get('app.edit') !!}</th>
 										<th class="col-md-1">{!! Lang::get('app.number') !!}</th>
 										<th class="col-md-1">{!! Lang::get('app.period') !!}</th>
 										<th class="col-md-1 text-center">{!! Lang::get('app.abodemen') !!}</th>
@@ -142,6 +143,24 @@
 									</tr>
 								</thead>
 								<tbody>
+									@foreach(Cart::instance('line-form')->content() as $row)
+									<tr>
+										<td class='text-center'> <span> <a class="line_edit" id="{!! $row->rowId !!}" href="#" ><i class='fa fa-pencil'></i> </a> &nbsp;  <a class='line_delete' id="{!! $row->rowId !!}" href='#'><i class='fa fa-trash'></i> </a></span></td>
+										<td>{!! $row->name !!}</td>
+										<td>{!! $row->id !!}</td>
+										<td class="text-right">{!! number_format($row->options->abodemen,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->japati,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->mobile,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->local,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->sljj,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->sli_007,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->telkom_global_017,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->surcharge,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->ppn,2) !!}</td>
+										<td class="text-right">{!! number_format($row->options->subtotal,2) !!}</td>
+									</tr>
+									@endforeach	
+									
 									<tr class="first_line">
 										<td colspan="7 text-right">
 											@if(Role::access('c','telephone-billing'))
@@ -244,6 +263,87 @@ $(document).ready(function(){
 		$('#line-form').modal('show');
 	});
 	
+	$("#table_items").on('click', '.line_edit', function(event) {
+		event.preventDefault();
+		$('#line-form').modal('show');
+		$("div#modalLoading").addClass('show');
+		var id = $(this).attr("id");
+		$.ajax({
+			type  : "post",
+			url   : "{!! url('telephone-billing/view-line') !!}",
+			data  : {id : id},
+			dataType: "json",
+			cache : false,
+			beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf_token"]').attr('content'))},
+			success : function(response) {
+				if(response.success == true) {
+					$('#line-form #phone_number').val(response.phone_number);
+					$('#armada-form #armada_id').val(response.armada_id);
+							$('#armada-form #driver_id').val(response.driver_id);
+							$('#armada-form #helper_id').val(response.helper_id);
+							$('#armada-form #hour_pick_up').val(response.hour_pick_up);
+							$('#armada-form #minute_pick_up').val(response.minute_pick_up);
+							$('#armada-form #km_start').val(response.km_start);
+							$('#armada-form #km_end').val(response.km_end);
+							$('#armada-form #driver_premi').val(response.driver_premi);
+							$('#armada-form #helper_premi').val(response.helper_premi);
+							$('#armada-form #operational_cost').val(response.operational_cost);
+							$('.op_subtotal').html(response.total_cost);
+							$('.op_subtotal').number(true,2);
+							$('#armada-form #bbm').val(response.bbm);
+							$('#armada-form #tol').val(response.tol);
+							$('#armada-form #parking_fee').val(response.parking_fee);
+							$('.op_subtotal_2').html(response.total_expense);
+							$('.op_subtotal_2').number(true,2);
+							$('.op_subtotal_3').html(response.saldo);
+							$('.op_subtotal_3').number(true,2);
+					$("div#modalLoading").removeClass('show');
+							
+				}
+
+                                
+                    },
+                    error : function() {
+                       $("div#divLoading").removeClass('show');
+                    }
+                });
+				return false;
+			});
+			
+	//table_items
+	$("#table_items").on('click', '.line_delete', function(event){
+		event.preventDefault();
+		var id = $(this).attr("id");
+		var container = $(this);
+		$("div#divLoading").addClass('show');
+		$.confirm({
+			title: '{!! Lang::get("app.confirm") !!}',
+			content: '{!! Lang::get("info.confirm delete") !!}',
+            confirm: function(){
+				$.ajax({
+					type  : "post",
+					url   : "{!! url('telephone-billing/do-delete/line') !!}",
+                    data  : {id : id},
+                    dataType: "json",
+					cache : false,
+					beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf_token"]').attr('content'))},
+					success : function(response) {
+						$("div#divLoading").removeClass('show');
+                        if(response.success == true) {
+							$(container).parent().parent().parent().remove();
+							$.alert(response.message);
+                        }  
+					},
+                    error : function() {
+                        $("div#divLoading").removeClass('show');
+                    }
+				});		
+			},
+			cancel: function(){
+				$("div#divLoading").removeClass('show');
+			}
+		});			
+	});
 	
 	$('#update_form').on('submit', function(event) {
 		event.preventDefault();

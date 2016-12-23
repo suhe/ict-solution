@@ -5,6 +5,7 @@ return [
 	'confirm delete' => "Are you sure want to delete this item ? ",
 	'delete successfully' => "Delete this data has been successfully",
 	'insert successfully' => "Insert new data has been successfully",
+	'periode has already exists' => "Periode has already exists",
 	'update successfully' => "Update last data has been successfully",
 	'wrong email or password' => "Wrong email or password !",
 	

@@ -60,6 +60,12 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-md-12">{!! Lang::get('app.sljj') !!} <span class="help"> *</span></label>
+							<div class="col-md-12">
+								{!! Form::text('sljj',isset($data) ? $data->sljj: 0,['class' => 'form-control form-control-line text-right','id'=>'sljj','placeholder'=>'0','maxlength' => 100]) !!}
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-md-12">{!! Lang::get('app.sli 007') !!} <span class="help"> *</span></label>
 							<div class="col-md-12">
 								{!! Form::text('sli_007',isset($data) ? $data->sli_007: 0,['class' => 'form-control form-control-line text-right','id'=>'sli_007','placeholder'=>'0','maxlength' => 100]) !!}
@@ -124,14 +130,20 @@ $(function() {
 				} else {
 					var row = "";
 					row+="<tr>";
+					row+="<td class='text-center'> <span> <a class='line_edit' id ="+response.rowId+"' href='#'><i class='fa fa-pencil'></i> </a> &nbsp;  <a class='line_delete' id='"+response.rowId+"' href='#'><i class='fa fa-trash'></i> </a></span></td>";
 					row+="<td> " + response.phone_number + " </td>";
 					row+="<td> " + response.period + " </td>";
-					//row+="<td> " + response.driver_name + " </td>";
-					//row+="<td class='text-center'> " + response.hour_pickup + " </td>";
-					//row+="<td class='text-right'> " + response.op_cost + " </td>";
-					//row+="<td class='text-right'> " + response.other_cost + " </td>";
-					//row+="<td class='text-center'> <span> <a class='armada_edit'"+response.id+"' href='#'><i class='fa fa-pencil'></i> {!! Lang::get('global.edit') !!}</a> &nbsp; <a class='armada_edit'"+response.id+"' href='#'><i class='fa fa-print'></i> {!! Lang::get('global.print') !!}</a>  &nbsp;  <a class='armada_delete' id='"+response.id+"' href='#'><i class='fa fa-trash'></i> {!! Lang::get('global.delete') !!}</a></span></td>";
-					//row+="</tr>";
+					row+="<td class='text-right'>" + response.abodemen + " </td>";
+					row+="<td class='text-right'>" + response.japati + " </td>";
+					row+="<td class='text-right'>" + response.mobile + " </td>";
+					row+="<td class='text-right'>" + response.local + " </td>";
+					row+="<td class='text-right'>" + response.sljj + " </td>";
+					row+="<td class='text-right'>" + response.sli_007 + " </td>";
+					row+="<td class='text-right'>" + response.telkom_global_017 + " </td>";
+					row+="<td class='text-right'>" + response.surcharge + " </td>";
+					row+="<td class='text-right'>" + response.ppn + " </td>";
+					row+="<td class='text-right'>" + response.subtotal + " </td>";
+					row+="</tr>";
 					$('table#table_items tbody').prepend(row);
 					$('#line-form').modal('hide');
 				}
