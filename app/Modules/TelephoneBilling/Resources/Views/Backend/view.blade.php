@@ -85,7 +85,7 @@
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.payment method') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::text('payment_method',isset($data) ? $data->payment_method_id : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method'),'maxlength' => 100]) !!}
+						{!! Form::text('payment_method',isset($data) ? $data->payment_method : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method'),'maxlength' => 100]) !!}
                     </div>
                 </div>
 				

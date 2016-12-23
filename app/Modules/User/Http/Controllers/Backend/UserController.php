@@ -3,6 +3,7 @@ namespace App\Modules\User\Http\Controllers\Backend;
 
 use Illuminate\Routing\Controller;
 use App\Modules\User\User;
+use Auth;
 use Config;
 use Crypt;
 use Input;
