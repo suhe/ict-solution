@@ -182,5 +182,38 @@ class CustomerController extends Controller {
 		return Response::json($lists);
 	}
 	
+	public function lists(Customer $customer) {
+		$term = Input::get('term');
+		if(Input::has('term')) {
+			$lists = $customer->whereRaw("CONCAT(name,' ',identity_number) like '%".$term>".%'")->selectRaw("id,CONCAT(identity_number,' ',name) as name")->get();
+			return Response::json($lists);
+		} else {
+			return Response::json($lists = array());
+		}	
+	}
+	
+	public function view_json() {
+		$id = Input::get('id');
+		
+		$get_data = Customer::leftJoin('cities','cities.id','customers.city_id')
+		->leftJoin('customer_groups','customer_groups.id','customers.customer_group_id')
+		->selectRaw("customers.*,cities.name as city,customer_groups.name as customer_group")
+		->where('customers.id',$id)
+		->first();
+		
+		if($get_data) {
+			$params ['success'] =  true;
+			$params ['customer_name'] =  $get_data->name;
+			$params ['customer_address'] =  $get_data->address;
+			$params ['customer_city'] =  $get_data->city;
+			$params ['customer_zip_code'] =  $get_data->zip_code;
+			$params ['customer_contact_person'] =  $get_data->contact_person;
+			$params ['customer_contact_position'] =  $get_data->contact_position;
+		} else {
+			$params ['success'] =  false;
+		}
+		
+		return Response::json($params);
+	}
 	
 }

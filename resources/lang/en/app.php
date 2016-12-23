@@ -9,6 +9,7 @@ return [
 	'abodemen' => "Abodemen",
 	'address' => "Address",
 	'administration' => "Administration",
+	'auto generated' => "Auto Generated",
 	'back' => "Back",
 	'bank' => "Bank",
 	'branch' => "Branch",

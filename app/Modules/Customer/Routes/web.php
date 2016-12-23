@@ -21,4 +21,6 @@ Route::group(['prefix' => 'customer','middleware'=>['is_logged']], function () {
 	Route::get('/get/customer-group', ['uses' => 'Backend\CustomerController@get_customer_group']);
 	Route::post('/do-update', ['uses' => 'Backend\CustomerController@do_update','middleware' => ['role_update:customer']]);
 	Route::post('/do-delete', ['uses' => 'Backend\CustomerController@do_delete','middleware' => ['role_delete:customer']]);
+	Route::get('/lists', ['uses' => 'Backend\CustomerController@lists']);
+	Route::get('/view-json', ['uses' => 'Backend\CustomerController@view_json']);
 });

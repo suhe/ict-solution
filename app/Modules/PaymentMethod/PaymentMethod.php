@@ -12,5 +12,15 @@ class PaymentMethod extends Model{
 	protected $primaryKey = "id";
     public $timestamps = false;
 	public $sortable = ['name','description','type'];
- 
+	
+	public static function lists() {
+		$lists = self::where('is_active',1)->get();
+		$list = array();
+		if($lists) {
+			foreach($lists as $key => $row) {
+				$list[$row->id] = $row->name;
+			}
+		}
+		return $list;
+	} 
 }

@@ -44,4 +44,21 @@ class TelephoneBillingController extends Controller {
 			'details' => TelephoneBillingDetail::where(['telephone_billing_id' =>$id])->get(),
 		]);
 	}
+	
+	public function form($id = 0) {
+		$id = $id ? Crypt::decrypt($id) : null;
+		$get_data = TelephoneBilling::join('customers','customers.id','telephone_billings.customer_id')
+		->leftJoin('cities','cities.id','customers.city_id')
+		->leftJoin('payment_method','payment_method.id','telephone_billings.payment_method_id')
+		->selectRaw("telephone_billings.*,customers.name as customer_name,customers.address as customer_address,cities.name as customer_city,customers.zip_code as customer_zip_code,contact_person,contact_position,customers.identity_number as customer_id")
+		->selectRaw("payment_method.name as payment_method")
+		->where('telephone_billings.id',$id)
+		->first();
+		
+		return Theme::view('telephone-billing::Backend.form',[
+			'page_title' => Lang::get('app.telephone billing').' '.($get_data ? $get_data->number : null),
+			'data' => $get_data,
+			'details' => TelephoneBillingDetail::where(['telephone_billing_id' =>$id])->get(),
+		]);
+	}
 }
