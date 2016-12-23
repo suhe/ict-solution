@@ -37,6 +37,7 @@
   <div class="cssload-speeding-wheel"></div>
 </div>
 <section id="wrapper" class="login-register">
+	<div id="divLoading"></div>
 	@yield('content')
 </section>
 <!-- jQuery -->
