@@ -287,8 +287,9 @@
     <!--Style Switcher -->
 	<script src="../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 	<script src="{!! Theme::asset('vendor/jquery-confirm/jquery-confirm.min.js')!!}"></script>
-	
+	<script src="{!! Theme::asset('vendor/jquery-number/jquery.number.min.js')!!}"></script>
 	@stack('scripts')
+	@stack('script-extras')
 </body>
 
 </html>

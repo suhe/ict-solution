@@ -61,4 +61,61 @@ class TelephoneBillingController extends Controller {
 			'details' => TelephoneBillingDetail::where(['telephone_billing_id' =>$id])->get(),
 		]);
 	}
+	
+	public function do_update_line() {
+		$telephone_billing_id =  Input::has("id") ? Crypt::decrypt(Input::get("id")) : null;
+		$phone_number = Input::get('phone_number');
+		$period = Input::get('period');
+		$abodemen = Input::get('abodemen');
+		$japati = Input::get('japati');
+		$mobile = Input::get('mobile');
+		$local = Input::get('local');
+		$sli_007 = Input::get('sli_007');
+		$telkom_global_017 = Input::get('telkom_global_017');
+		$surcharge = Input::get('surcharge');
+		$ppn = Input::get('ppn');
+		
+		$field = array (
+			'phone_number' => $phone_number,
+			'period' => $period,
+			'abodemen' => $abodemen,
+			'japati' => $japati,
+			'mobile' => $mobile,
+			'local' => $local,
+			'sli_007' => $sli_007,
+			'telkom_global_017' => $telkom_global_017,
+			'surcharge' => $surcharge,
+			'ppn' => $ppn,
+        );
+		
+		$rules = array (
+			'phone_number' => "required",
+			'period' => "required",
+			'abodemen' => "required",
+			'japati' => "required",
+			'mobile' => "required",
+			'local' => "required",
+			'sli_007' => "required",
+			'telkom_global_017' => "required",
+			'surcharge' => "required",
+			'ppn' => "required",
+        );
+		
+		$validate = Validator::make($field,$rules);
+		if($validate->fails()) {
+			$params = array(
+                'success' => false,
+                'message' => $validate->getMessageBag()->toArray()
+            );
+		} else {
+			$params = array(
+                'success' => true,
+                'phone_number' => $phone_number,
+				'period' => $period,
+			);
+		}
+		
+		return Response::json($params);
+
+	}
 }

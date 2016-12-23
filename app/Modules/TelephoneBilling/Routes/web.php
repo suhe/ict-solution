@@ -19,4 +19,5 @@ Route::group(['prefix' => 'telephone-billing','middleware'=>['is_logged']], func
 	Route::get('/form/{slug}', ['uses' => 'Backend\TelephoneBillingController@form','middleware' => ['role_update:telephone-billing']]);
 	Route::post('/do-update', ['uses' => 'Backend\TelephoneBillingController@do_update','middleware' => ['role_update:telephone-billing']]);
 	Route::post('/do-delete', ['uses' => 'Backend\TelephoneBillingController@do_delete','middleware' => ['role_delete:telephone-billing']]);
+	Route::post('/do-update/line', ['uses' => 'Backend\TelephoneBillingController@do_update_line','middleware' => ['role_update:telephone-billing']]);
 });

@@ -124,7 +124,7 @@
 				<div class="tab-content">
 					<div class="tab-pane active" id="home">
 						<div class="table-responsive" id="item_details">
-							<table class="table table-striped">
+							<table id="table_items" class="table table-striped">
 								<thead>
 									<tr>
 										<th class="col-md-1">{!! Lang::get('app.number') !!}</th>
@@ -142,7 +142,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									
+									<tr class="first_line">
+										<td colspan="7 text-right">
+											@if(Role::access('c','telephone-billing'))
+											<a href="#" class="add-line btn btn-primary"> <i class="fa fa-pencil"></i> {!! Lang::get('app.add line') !!}</a>
+											@endif
+										</td>		
+									</tr>
 								</tbody>
 								<tfoot>
 									
@@ -156,6 +162,9 @@
 		</div>
 	</div>	
 	{!! Form::close() !!}
+	
+	@include('telephone-billing::Backend.line-form')
+	
 @endsection
 
 @push('stylesheet')
@@ -230,6 +239,10 @@ $(document).ready(function(){
 		});
 	});
 	
+	$(".add-line").on('click', function(event){
+		event.preventDefault();
+		$('#line-form').modal('show');
+	});
 	
 	
 	$('#update_form').on('submit', function(event) {
