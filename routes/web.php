@@ -13,5 +13,5 @@
 
 Route::get('/', function () {
     //return view('welcome');
-	return Redirect::intended('/customer');
+	return Redirect::intended('/session/login');
 });
