@@ -111,7 +111,7 @@
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.service periode') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::text('service_periode',isset($data) ? $data->service_periode : null,['class' => 'form-control form-control-line','id'=>'service_periode','placeholder'=>lang::get('app.service periode'),'maxlength' => 12]) !!}
+						{!! Form::text('service_periode',isset($data) ? $data->service_period : null,['class' => 'form-control form-control-line','id'=>'service_periode','placeholder'=>lang::get('app.service periode'),'maxlength' => 12]) !!}
                     </div>
                 </div>
 			</div>

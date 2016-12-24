@@ -1,6 +1,7 @@
 @extends('ict-backend-theme::main_layout',['title' => $page_title])
 @section('content')
-	{!! Form::open(['url' => '#','role' => 'form','id'=>'update_form','class' => 'form-material form-horizontal']) !!}
+	{!! Form::open(['url' => 'telephone-billing/do-update','role' => 'form','id'=>'update_form','class' => 'form-material form-horizontal']) !!}
+	{!! Form::hidden('id', isset($data) ?  Crypt::encrypt($data->id) : null, ['id' => 'id']) !!}
 	<div class="row bg-title">
         <div class="col-lg-6">
           <h4 class="page-title"> {!! $page_title !!}</h4>
@@ -74,14 +75,14 @@
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.customer id') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::select('customer_id',[],isset($data) ? $data->customer_id : null,['class' => 'form-control form-control-line','id'=>'customer_id','placeholder'=>lang::get('app.customer id'),'maxlength' => 100]) !!}
+						{!! Form::select('customer_id',[],isset($data) ? $data->customer_id : null,['class' => 'form-control form-control-line','id'=>'customer_id','placeholder'=>lang::get('app.customer id')]) !!}
                     </div>
                 </div>
 				
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.payment method') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::select('payment_method',App\Modules\PaymentMethod\PaymentMethod::lists(),isset($data) ? $data->payment_method : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method'),'maxlength' => 100]) !!}
+						{!! Form::select('payment_method_id',App\Modules\PaymentMethod\PaymentMethod::lists(),isset($data) ? $data->payment_method : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method')]) !!}
                     </div>
                 </div>
 				
@@ -107,7 +108,7 @@
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.service periode') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::text('service_periode',isset($data) ? $data->service_periode : null,['class' => 'form-control form-control-line','id'=>'service_periode','placeholder'=>lang::get('app.service periode'),'maxlength' => 12]) !!}
+						{!! Form::text('service_period',isset($data) ? $data->service_period : null,['class' => 'form-control form-control-line','id'=>'service_period','placeholder'=>lang::get('app.service periode'),'maxlength' => 12]) !!}
                     </div>
                 </div>
 			</div>
