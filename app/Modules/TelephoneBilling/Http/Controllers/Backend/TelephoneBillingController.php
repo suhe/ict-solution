@@ -38,6 +38,34 @@ class TelephoneBillingController extends Controller {
 		->selectRaw("payment_method.name as payment_method")
 		->where('telephone_billings.id',$id)
 		->first();
+
+        if($get_data) {
+            $get_data_details = TelephoneBillingDetail::where(['telephone_billing_id' => $get_data->id])->get();
+            foreach($get_data_details as $key => $row) {
+                Cart::instance('line-form')->add([
+                    'id' => $row->period,
+                    'name' => $row->phone_number,
+                    'qty' => 1,
+                    'price' => 1,
+                    'options' => [
+                        'abodemen' => $row->abodemen,
+                        'japati' => $row->japati,
+                        'mobile' => $row->mobile,
+                        'local' => $row->local,
+                        'sljj' => $row->sljj,
+                        'sli_007' => $row->sli_007,
+                        'telkom_global_017' => $row->telkom_global_017,
+                        'surcharge' => $row->surcharge,
+                        'surcharge_total' => $row->surcharge_total,
+                        'ppn' => $row->ppn,
+                        'ppn_total' => $row->ppn_total,
+                        'subtotal' => $row->sub_total,
+                    ]
+                ]);
+            }
+        } else {
+            Cart::instance('line-form')->destroy();
+        }
 		
 		return Theme::view('telephone-billing::Backend.view',[
 			'page_title' => Lang::get('app.telephone billing').' '.$get_data->number,
@@ -48,7 +76,7 @@ class TelephoneBillingController extends Controller {
 	
 	public function form($id = 0) {
 		$id = $id ? Crypt::decrypt($id) : null;
-		$get_data = TelephoneBilling::join('customers','customers.id','telephone_billings.customer_id')
+		$get_data = TelephoneBilling::leftJoin('customers','customers.id','telephone_billings.customer_id')
 		->leftJoin('cities','cities.id','customers.city_id')
 		->leftJoin('payment_method','payment_method.id','telephone_billings.payment_method_id')
 		->selectRaw("telephone_billings.*,customers.name as customer_name,customers.address as customer_address,cities.name as customer_city,customers.zip_code as customer_zip_code,contact_person,contact_position,customers.identity_number as customer_id")
@@ -67,15 +95,15 @@ class TelephoneBillingController extends Controller {
 		$rowId =  Input::has("id") ? Input::get("id") : null;
 		$phone_number = Input::get('phone_number');
 		$period = Input::get('period');
-		$abodemen = Input::get('abodemen');
-		$japati = Input::get('japati');
-		$mobile = Input::get('mobile');
-		$local = Input::get('local');
-		$sli_007 = Input::get('sli_007');
-		$sljj = Input::get('sljj');
-		$telkom_global_017 = Input::get('telkom_global_017');
-		$surcharge = Input::get('surcharge');
-		$ppn = Input::get('ppn');
+		$abodemen = Input::has('abodemen') ? Input::get('abodemen') : 0;
+		$japati = Input::has('japati') ? Input::get('japati') : 0;
+		$mobile = Input::has('mobile') ? Input::get('mobile') : 0;
+		$local = Input::has('local') ? Input::get('local') : 0;
+		$sli_007 = Input::has('sli_007') ? Input::get('sli_007') : 0;
+		$sljj = Input::has('sljj') ? Input::get('sljj') : 0;
+		$telkom_global_017 = Input::has('telkom_global_017') ? Input::get('telkom_global_017') : 0;
+		$surcharge = Input::has('surcharge') ? Input::get('surcharge') : 0;
+		$ppn = Input::has('ppn') ? Input::get('ppn') : 0;
 		
 		$field = array (
 			'phone_number' => $phone_number,
@@ -126,8 +154,8 @@ class TelephoneBillingController extends Controller {
             );
 		} else {
 			$total = $japati + $mobile + $local + $sljj + $sli_007 + $telkom_global_017;
-			$surcharge_total = ($surcharge/100) * $total;
-			$ppn_total = ($ppn/100) * ($abodemen + $total + $surcharge_total);
+			$surcharge_total = $surcharge !=  0 ? (($surcharge/100) * $total) : 0;
+			$ppn_total = $ppn != 0 ? (($ppn/100) * ($abodemen + $total + $surcharge_total)) : 0;
 			$sub_total  = $abodemen + $total + $surcharge_total + $ppn_total;
 			
 			//Add New Cart Item
@@ -255,7 +283,7 @@ class TelephoneBillingController extends Controller {
 	
 	
 	public function do_update() {
-		$id =  Input::has("id") ? Crypt::encrypt(Input::get("id")) : null;
+		$id =  Input::has("id") ? Crypt::decrypt(Input::get("id")) : null;
 		$customer_id = Input::get('customer_id');
 		$payment_method_id = Input::get('payment_method_id');
 		$payment_frequency = Input::get('payment_frequency');
@@ -288,7 +316,7 @@ class TelephoneBillingController extends Controller {
                 'success' => false,
                 'message' => $validate->getMessageBag()->toArray()
             );
-		} else if(!Cart::instance('line-form')->content()) {
+		} else if(Cart::instance('line-form')->count() < 1) {
 			$params = array(
                 'success' => false,
                 'message' => [
@@ -297,14 +325,14 @@ class TelephoneBillingController extends Controller {
             );		
 		} else {
 			//save / updated master
-			$telephone_billing = new TelephoneBilling();
+            $telephone_billing = new TelephoneBilling();
 			if(!$id) {
 				$telephone_billing->created_at = date("Y-m-d H:i:s");
 				$telephone_billing->created_by = Auth::user()->id;
-				$telephone_billing->number = "x";
+				$telephone_billing->number = TelephoneBilling::auto_number();
 			} else {
-				$telephone_billing =  $telephone_billing->find($id);
-				$telephone_billing->updated_at = date("Y-m-d H:i:s");
+				$telephone_billing =  $telephone_billing->where('id',$id)->first();
+                $telephone_billing->updated_at = date("Y-m-d H:i:s");
 				$telephone_billing->updated_by = Auth::user()->id;
 			}
 			
@@ -361,7 +389,7 @@ class TelephoneBillingController extends Controller {
                 $telephone_billing_detail->surcharge_total = $row->options->surcharge_total;
 				$telephone_billing_detail->ppn = $row->options->ppn;
                 $telephone_billing_detail->ppn_total = $row->options->ppn_total;
-                $telephone_billing_detail->subtotal = $row->options->subtotal;
+                $telephone_billing_detail->subtotal = $row->options->subtotal ? $row->options->subtotal : 0 ;
 				$telephone_billing_detail->save();
 				//variable total
                 $total_item+=1;
@@ -391,9 +419,9 @@ class TelephoneBillingController extends Controller {
 				'sljj' => $total_sljj,
 				'sli_007' => $total_sli_007,
 				'telkom_global_017' => $total_telkom_global_017,
-                'surcharge' => ($total_surcharge / $total_item),
+                'surcharge' => ($total_surcharge > 0 ? ($total_surcharge / $total_item) : 0),
                 'surcharge_total' => $total_surcharge_total,
-                'ppn' => ($total_ppn / $total_item),
+                'ppn' => ($total_ppn > 0 ? ($total_ppn / $total_item) : 0),
                 'ppn_total' => $total_ppn_total,
                 'total_bill' => $total_subtotal,
 			]);
@@ -427,6 +455,20 @@ class TelephoneBillingController extends Controller {
             $params ['message'] =  Lang::get('info.delete failed');
         }
         return Response::json($params);
+    }
+
+    public function get_customer(TelephoneBilling $telephoneBilling) {
+        $id = Input::has('id') ? Crypt::decrypt(Input::get("id")) : 0;
+        $data = $telephoneBilling->join('customers','customers.id','=','telephone_billings.customer_id')
+            ->selectRaw("customers.id,CONCAT(customers.identity_number,' ',customers.name) as name")->where('telephone_billings.id',$id)->first();
+
+        $lists = array();
+        if($data) {
+            $lists['key']['id'] = $data->id;
+            $lists['key']['name'] = $data->name;
+        }
+
+        return Response::json($lists);
     }
 
 }

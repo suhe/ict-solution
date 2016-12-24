@@ -140,8 +140,8 @@ $(function() {
 						row+="<td class='text-right'>" + response.sljj + " </td>";
 						row+="<td class='text-right'>" + response.sli_007 + " </td>";
 						row+="<td class='text-right'>" + response.telkom_global_017 + " </td>";
-						row+="<td class='text-right'>" + response.surcharge + " </td>";
-						row+="<td class='text-right'>" + response.ppn + " </td>";
+						row+="<td class='text-right'>" + response.surcharge_total + " </td>";
+						row+="<td class='text-right'>" + response.ppn_total + " </td>";
 						row+="<td class='text-right'>" + response.subtotal + " </td>";
 						row+="</tr>";
 						$('table#table_items tbody').prepend(row);
@@ -155,8 +155,8 @@ $(function() {
 						$('#'+response.rowId+' .sljj').html(response.sljj);
 						$('#'+response.rowId+' .sli_007').html(response.sli_007);
 						$('#'+response.rowId+' .telkom_global_017').html(response.telkom_global_017);
-						$('#'+response.rowId+' .surcharge').html(response.surcharge);
-						$('#'+response.rowId+' .ppn').html(response.ppn);
+						$('#'+response.rowId+' .surcharge').html(response.surcharge_total);
+						$('#'+response.rowId+' .ppn').html(response.ppn_total);
 						$('#'+response.rowId+' .subtotal').html(response.subtotal);
 					}
 					$('#line-form').modal('hide');

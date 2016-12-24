@@ -82,7 +82,7 @@
 				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.payment method') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
-						{!! Form::select('payment_method_id',App\Modules\PaymentMethod\PaymentMethod::lists(),isset($data) ? $data->payment_method : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method')]) !!}
+						{!! Form::select('payment_method_id',App\Modules\PaymentMethod\PaymentMethod::lists(),isset($data) ? $data->payment_method_id : null,['class' => 'form-control form-control-line','id'=>'payment_method_id','placeholder'=>lang::get('app.payment method')]) !!}
                     </div>
                 </div>
 				
@@ -156,8 +156,8 @@
 										<td class="sljj text-right">{!! number_format($row->options->sljj,2) !!}</td>
 										<td class="sli_007 text-right">{!! number_format($row->options->sli_007,2) !!}</td>
 										<td class="telkom_global_017 text-right">{!! number_format($row->options->telkom_global_017,2) !!}</td>
-										<td class="surcharge text-right">{!! number_format($row->options->surcharge,2) !!}</td>
-										<td class="ppn text-right">{!! number_format($row->options->ppn,2) !!}</td>
+										<td class="surcharge text-right">{!! number_format($row->options->surcharge_total,2) !!}</td>
+										<td class="ppn text-right">{!! number_format($row->options->ppn_total,2) !!}</td>
 										<td class="subtotal text-right">{!! number_format($row->options->subtotal,2) !!}</td>
 									</tr>
 									@endforeach	
