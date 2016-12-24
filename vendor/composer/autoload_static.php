@@ -86,6 +86,10 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         array (
             'Faker\\' => 6,
         ),
+        'E' => 
+        array (
+            'Elibyy\\TCPDF\\' => 13,
+        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
@@ -229,6 +233,10 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
         ),
+        'Elibyy\\TCPDF\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src',
+        ),
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
@@ -367,6 +375,7 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'App\\Modules\\Setting\\Providers\\ModuleServiceProvider' => __DIR__ . '/../..' . '/app/Modules/Setting/Providers/ModuleServiceProvider.php',
         'App\\Modules\\Setting\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Modules/Setting/Providers/RouteServiceProvider.php',
         'App\\Modules\\TelephoneBilling\\Http\\Controllers\\Backend\\TelephoneBillingController' => __DIR__ . '/../..' . '/app/Modules/TelephoneBilling/Http/Controllers/Backend/TelephoneBillingController.php',
+        'App\\Modules\\TelephoneBilling\\Http\\Controllers\\Backend\\TelephoneBillingPDFController' => __DIR__ . '/../..' . '/app/Modules/TelephoneBilling/Http/Controllers/Backend/TelephoneBillingPDFController.php',
         'App\\Modules\\TelephoneBilling\\Providers\\ModuleServiceProvider' => __DIR__ . '/../..' . '/app/Modules/TelephoneBilling/Providers/ModuleServiceProvider.php',
         'App\\Modules\\TelephoneBilling\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Modules/TelephoneBilling/Providers/RouteServiceProvider.php',
         'App\\Modules\\TelephoneBilling\\TelephoneBilling' => __DIR__ . '/../..' . '/app/Modules/TelephoneBilling/TelephoneBilling.php',
@@ -384,6 +393,7 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
+        'App\\Providers\\HelperServiceProvider' => __DIR__ . '/../..' . '/app/Providers/HelperServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Caffeinated\\Modules\\Console\\Commands\\ModuleDisableCommand' => __DIR__ . '/..' . '/caffeinated/modules/src/Console/Commands/ModuleDisableCommand.php',
@@ -462,6 +472,7 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'Cron\\MonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/MonthField.php',
         'Cron\\YearField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/YearField.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
+        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
         'DeepCopy\\Filter\\Doctrine\\DoctrineCollectionFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Filter/Doctrine/DoctrineCollectionFilter.php',
@@ -494,6 +505,10 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'Dotenv\\Exception\\ValidationException' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Exception/ValidationException.php',
         'Dotenv\\Loader' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Loader.php',
         'Dotenv\\Validator' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Validator.php',
+        'Elibyy\\TCPDF\\Facades\\TCPDF' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/Facades/TCPDF.php',
+        'Elibyy\\TCPDF\\ServiceProvider' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/ServiceProvider.php',
+        'Elibyy\\TCPDF\\TCPDF' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/TCPDF.php',
+        'Elibyy\\TCPDF\\TCPDFHelper' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/TCPDFHelper.php',
         'Faker\\Calculator\\Iban' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/Calculator/Iban.php',
         'Faker\\Calculator\\Luhn' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/Calculator/Luhn.php',
         'Faker\\DefaultGenerator' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/DefaultGenerator.php',
@@ -1796,6 +1811,7 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'Monolog\\Processor\\UidProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php',
         'Monolog\\Processor\\WebProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php',
         'Monolog\\Registry' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Registry.php',
+        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
         'PHPUnit\\Framework\\TestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestCase.php',
@@ -2587,6 +2603,7 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'Psy\\VersionUpdater\\GitHubChecker' => __DIR__ . '/..' . '/psy/psysh/src/Psy/VersionUpdater/GitHubChecker.php',
         'Psy\\VersionUpdater\\IntervalChecker' => __DIR__ . '/..' . '/psy/psysh/src/Psy/VersionUpdater/IntervalChecker.php',
         'Psy\\VersionUpdater\\NoopChecker' => __DIR__ . '/..' . '/psy/psysh/src/Psy/VersionUpdater/NoopChecker.php',
+        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Ramsey\\Uuid\\BinaryUtils' => __DIR__ . '/..' . '/ramsey/uuid/src/BinaryUtils.php',
         'Ramsey\\Uuid\\Builder\\DefaultUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DefaultUuidBuilder.php',
         'Ramsey\\Uuid\\Builder\\DegradedUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DegradedUuidBuilder.php',
@@ -3243,6 +3260,17 @@ class ComposerStaticInit84b90b9b173be0af49357427e4079447
         'Symfony\\Polyfill\\Util\\BinaryNoFuncOverload' => __DIR__ . '/..' . '/symfony/polyfill-util/BinaryNoFuncOverload.php',
         'Symfony\\Polyfill\\Util\\BinaryOnFuncOverload' => __DIR__ . '/..' . '/symfony/polyfill-util/BinaryOnFuncOverload.php',
         'Symfony\\Polyfill\\Util\\TestListener' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListener.php',
+        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
+        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
+        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
+        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
+        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
+        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
+        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
+        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
+        'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
+        'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
+        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',

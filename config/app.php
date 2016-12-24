@@ -169,9 +169,9 @@ return [
 		Caffeinated\Modules\ModulesServiceProvider::class,
 		Caffeinated\Themes\ThemesServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+        Elibyy\TCPDF\ServiceProvider::class,
 		Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 		Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
-
         //
 
         /*
@@ -225,6 +225,7 @@ return [
 		'Module' => Caffeinated\Modules\Facades\Module::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password' => Illuminate\Support\Facades\Password::class,
+        'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
         'Redis' => Illuminate\Support\Facades\Redis::class,

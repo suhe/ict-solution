@@ -85,6 +85,7 @@ return [
 	'summary'=> "Summary",
 	'surcharge' => "Surcharge (15%)",
 	'telephone billing' => "Telephone Billing",
+    'telephone billing statement'=>"Telephone Billing Statement",
 	'telkom global 017' => "Telkom Global 017",
 	'total' => "Total",
 	'total bill' => "Total Bill",

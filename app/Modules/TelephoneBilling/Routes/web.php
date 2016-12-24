@@ -23,4 +23,6 @@ Route::group(['prefix' => 'telephone-billing','middleware'=>['is_logged']], func
 	Route::post('/view-line', ['uses' => 'Backend\TelephoneBillingController@view_line','middleware' => ['role_read:telephone-billing']]);
 	Route::post('/do-delete/line', ['uses' => 'Backend\TelephoneBillingController@do_delete_line','middleware' => ['role_delete:telephone-billing']]);
     Route::get('/get/customer', ['uses' => 'Backend\TelephoneBillingController@get_customer']);
+    Route::get('/export/pdf/{slug}', ['uses' => 'Backend\TelephoneBillingPDFController@invoice']);
+
 });
