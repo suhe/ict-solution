@@ -301,8 +301,8 @@ $(document).ready(function(){
 					$('#line-form #sljj').val(response.sljj);
 					$('#line-form #sli_007').val(response.sli_007);
 					$('#line-form #telkom_global_017').val(response.telkom_global_017);
-					$('#line-form #surcharge').val(response.surcharge);
-					$('#line-form #ppn').val(response.ppn);	
+					$('#line-form #surcharge').val(response.surcharge_total);
+					$('#line-form #ppn').val(response.ppn_total);
 				}
 				
 				$("div#modalLoading").removeClass('show');

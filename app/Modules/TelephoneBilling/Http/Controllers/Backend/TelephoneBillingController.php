@@ -146,8 +146,10 @@ class TelephoneBillingController extends Controller {
 						'sljj' => $sljj,
 						'sli_007' => $sli_007,
 						'telkom_global_017' => $telkom_global_017,
-						'surcharge' => $surcharge_total,
-						'ppn' => $ppn_total,
+						'surcharge' => $surcharge,
+                        'surcharge_total' => $surcharge_total,
+						'ppn' => $ppn,
+                        'ppn_total' => $ppn_total,
 						'subtotal' => $sub_total,
 					]	
 				]);
@@ -176,8 +178,10 @@ class TelephoneBillingController extends Controller {
 						'sljj' => $sljj,
 						'sli_007' => $sli_007,
 						'telkom_global_017' => $telkom_global_017,
-						'surcharge' => $surcharge_total,
-						'ppn' => $ppn_total,
+                        'surcharge' => $surcharge,
+                        'surcharge_total' => $surcharge_total,
+                        'ppn' => $ppn,
+                        'ppn_total' => $ppn_total,
 						'subtotal' => $sub_total,
 					]	
 				]);
@@ -197,8 +201,10 @@ class TelephoneBillingController extends Controller {
 				'sli_007' => number_format($sli_007,2),
 				'telkom_global_017' => number_format($telkom_global_017,2),
 				'total' => number_format($total,2),
-				'surcharge' => number_format($surcharge_total,2),
-				'ppn' => number_format($ppn_total,2),
+                'surcharge' => number_format($surcharge,2),
+				'surcharge_total' => number_format($surcharge_total,2),
+                'ppn' => number_format($ppn_total,2),
+				'ppn_total' => number_format($ppn_total,2),
 				'subtotal' => number_format($sub_total,2),
 			);
 		}
@@ -223,7 +229,9 @@ class TelephoneBillingController extends Controller {
 				'sli_007' => $row->options->sli_007,
 				'telkom_global_017' => $row->options->telkom_global_017,
 				'surcharge' => $row->options->surcharge,
+                'surcharge_total' => $row->options->surcharge_total,
 				'ppn' => $row->options->ppn,
+                'ppn_total' => $row->options->ppn_total,
 				'subtotal' => $row->options->sub_total,
 			];
 		} else {
@@ -314,14 +322,16 @@ class TelephoneBillingController extends Controller {
 			$telephone_billing->sli_007 = 0;
 			$telephone_billing->telkom_global_017 = 0;
 			$telephone_billing->surcharge = 0;
+            $telephone_billing->surcharge_total = 0;
 			$telephone_billing->ppn = 0;
+            $telephone_billing->ppn_total = 0;
             $telephone_billing->total_bill = 0;
 			$telephone_billing->save();
 			
 			//save / updated details
 			//delete details
 			$exe_update = TelephoneBillingDetail::where(['telephone_billing_id' => $telephone_billing->id])->delete();
-			
+			$total_item = 0;
 			$total_abodemen = 0;
 			$total_japati = 0;
 			$total_mobile = 0;
@@ -329,6 +339,11 @@ class TelephoneBillingController extends Controller {
 			$total_sljj = 0;
 			$total_sli_007 =0;
 			$total_telkom_global_017 = 0;
+            $total_surcharge = 0;
+            $total_surcharge_total = 0;
+            $total_ppn = 0;
+            $total_ppn_total = 0;
+
             $total_subtotal = 0;
 			foreach(Cart::instance('line-form')->content() as $row) {
 				$telephone_billing_detail = new TelephoneBillingDetail();
@@ -343,17 +358,24 @@ class TelephoneBillingController extends Controller {
 				$telephone_billing_detail->sli_007 = $row->options->sli_007;
 				$telephone_billing_detail->telkom_global_017 = $row->options->telkom_global_017;
 				$telephone_billing_detail->surcharge = $row->options->surcharge;
+                $telephone_billing_detail->surcharge_total = $row->options->surcharge_total;
 				$telephone_billing_detail->ppn = $row->options->ppn;
+                $telephone_billing_detail->ppn_total = $row->options->ppn_total;
                 $telephone_billing_detail->subtotal = $row->options->subtotal;
 				$telephone_billing_detail->save();
 				//variable total
+                $total_item+=1;
 				$total_abodemen+=$row->options->abodemen;
-				$total_japati = $row->options->japati;
-				$total_mobile = $row->options->mobile;
-				$total_local = $row->options->local;
-				$total_sljj = $row->options->sljj;
-				$total_sli_007 =$row->options->sli_007;
-				$total_telkom_global_017 = $row->options->telkom_global_017;
+				$total_japati+=$row->options->japati;
+				$total_mobile+=$row->options->mobile;
+				$total_local+=$row->options->local;
+				$total_sljj+= $row->options->sljj;
+				$total_sli_007+=$row->options->sli_007;
+				$total_telkom_global_017+=$row->options->telkom_global_017;
+                $total_surcharge+= $row->options->surcharge;
+                $total_surcharge_total+= $row->options->surcharge_total;
+                $total_ppn+= $row->options->ppn;
+                $total_ppn_total+= $row->options->ppn_total;
                 $total_subtotal = $row->options->subtotal;
 			}
 
@@ -369,6 +391,10 @@ class TelephoneBillingController extends Controller {
 				'sljj' => $total_sljj,
 				'sli_007' => $total_sli_007,
 				'telkom_global_017' => $total_telkom_global_017,
+                'surcharge' => ($total_surcharge / $total_item),
+                'surcharge_total' => $total_surcharge_total,
+                'ppn' => ($total_ppn / $total_item),
+                'ppn_total' => $total_ppn_total,
                 'total_bill' => $total_subtotal,
 			]);
 
