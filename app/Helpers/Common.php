@@ -5,19 +5,19 @@ if (!function_exists('regard_format')) {
 		if ($x < 12)
 			return " " . $number[$x];
 		elseif ($x < 20)
-			return be_regarded($x - 10) . " Belas";
+			return regard_format($x - 10) . " Belas";
 		elseif ($x < 100)
-			return be_regarded($x / 10) . " Puluh" . be_regarded($x % 10);
+			return regard_format($x / 10) . " Puluh" . regard_format($x % 10);
 		elseif ($x < 200)
-			return "seratus" . be_regarded($x - 100);
+			return "seratus" . regard_format($x - 100);
 		elseif ($x < 1000)
-			return be_regarded($x / 100) . " Ratus" . be_regarded($x % 100);
+			return regard_format($x / 100) . " Ratus" . regard_format($x % 100);
 		elseif ($x < 2000)
-			return "seribu" . be_regarded($x - 1000);
+			return "seribu" . regard_format($x - 1000);
 		elseif ($x < 1000000)
-			return be_regarded($x / 1000) . " Ribu" . be_regarded($x % 1000);
+			return regard_format($x / 1000) . " Ribu" . regard_format($x % 1000);
 		elseif ($x < 1000000000)
-			return be_regarded($x / 1000000) . " Juta" . be_regarded($x % 1000000);
+			return regard_format($x / 1000000) . " Juta" . regard_format($x % 1000000);
 	}
 }
 
