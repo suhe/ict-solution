@@ -5,16 +5,20 @@
         <div class="col-lg-6">
           <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
+
         <div class="col-lg-6">
 			<div class="pull-right">
+
 				<div class="btn-group">
 					@if(Role::access('c','telephone-billing'))
 					<a href="{!! url('/telephone-billing/form') !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-plus"></i> {!! Lang::get("app.create") !!}</a>
 					@endif
 					@if(Role::access('u','telephone-billing'))
-					<a href="{!! url('/telephone-billing/export/pdf/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.export pdf") !!}</a>
-					<a href="{!! url('/telephone-billing/form/'.Crypt::encrypt($data->id)) !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-pencil"></i> {!! Lang::get("app.edit") !!}</a>
+							<a href="{!! url('/telephone-billing/export/pdf/statement/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.billing statement") !!}</a>
+							<a href="{!! url('/telephone-billing/export/pdf/invoice/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.invoice") !!}</a>
+							<a href="{!! url('/telephone-billing/form/'.Crypt::encrypt($data->id)) !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-pencil"></i> {!! Lang::get("app.edit") !!}</a>
 					@endif
+
 					<a href="{!! url('/telephone-billing') !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-undo"></i> {!! Lang::get("app.back") !!}</a>
                 </div>
 			</div>
@@ -213,8 +217,8 @@
 										<td class="text-right">{!! number_format($row->sljj,2) !!}</td>
 										<td class="text-right">{!! number_format($row->sli_007,2) !!}</td>
 										<td class="text-right">{!! number_format($row->telkom_global_017,2) !!}</td>
-										<td class="text-right">{!! number_format($row->surcharge,2) !!}</td>
-										<td class="text-right">{!! number_format($row->ppn,2) !!}</td>
+										<td class="text-right">{!! number_format($row->surcharge_total,2) !!}</td>
+										<td class="text-right">{!! number_format($row->ppn_total,2) !!}</td>
 										<td class="text-right">{!! number_format($row->subtotal,2) !!}</td>
 									</tr>
 									@endforeach
@@ -229,8 +233,8 @@
 										<th class="text-right"><strong>{!! number_format($data->sljj,2) !!}</strong></th>
 										<th class="text-right"><strong>{!! number_format($data->sli_007,2) !!}</strong></th>
 										<th class="text-right"><strong>{!! number_format($data->telkom_global_017,2) !!}</strong></th>
-										<th class="text-right"><strong>{!! number_format($data->surcharge,2) !!}</strong></th>
-										<th class="text-right"><strong>{!! number_format($data->ppn,2) !!}</strong></th>
+										<th class="text-right"><strong>{!! number_format($data->surcharge_total,2) !!}</strong></th>
+										<th class="text-right"><strong>{!! number_format($data->ppn_total,2) !!}</strong></th>
 										<th class="text-right"><strong>{!! number_format($data->total_bill,2) !!}</strong></th>
 									</tr>
 								</tfoot>

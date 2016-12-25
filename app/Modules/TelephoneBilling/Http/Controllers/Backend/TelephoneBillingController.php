@@ -40,6 +40,7 @@ class TelephoneBillingController extends Controller {
 		->first();
 
         if($get_data) {
+            Cart::instance('line-form')->destroy(); //destroy first
             $get_data_details = TelephoneBillingDetail::where(['telephone_billing_id' => $get_data->id])->get();
             foreach($get_data_details as $key => $row) {
                 Cart::instance('line-form')->add([
@@ -59,7 +60,7 @@ class TelephoneBillingController extends Controller {
                         'surcharge_total' => $row->surcharge_total,
                         'ppn' => $row->ppn,
                         'ppn_total' => $row->ppn_total,
-                        'subtotal' => $row->sub_total,
+                        'subtotal' => $row->subtotal,
                     ]
                 ]);
             }

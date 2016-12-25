@@ -92,9 +92,9 @@ $(function() {
 						$("div#divLoading").removeClass('show');
 							if(response.success == true) {
 								$(".row-" + response.id).remove();
+								$.alert(response.message);
 							}
 
-						$.alert(response.message);
 					},
 					error : function() {
 						$("div#divLoading").removeClass('show');

@@ -1,8 +1,28 @@
 <?php
 
 return [
+    'abodemen' => "Abodemen",
     'account' => "Account",
+    'attn' => "Attn",
+    'customer no' => "No.Pelanggan",
+    'due date' => "Tanggal Jatuh Tempo",
+    'japati' => "Japati",
+    'local' => "Lokal",
+    'mobile call' => "Perckp.Ponsel",
     'npwp' => "NPWP",
+    'payment frequency' => "Frekuensi Pembayaran",
+    'payment method' => "Metode Pembayaran",
+    'period' => "Periode",
+    'position' => "Jabatan",
+    'ppn' => "PPN (10%)",
+    'print date' => "Tanggal Cetak",
+    'service period' => "Periode Service",
+    'sli 007' => "SLI 007",
+    'sljj' => "SLJJ",
+    'surcharge' => "Surcharge (15%)",
     'telephone billing statement' => "Informasi Tagihan Telepon",
-
+    'telephone number' => "No.Telepon",
+    'telkom global 017' => "Telkom GLB 017",
+    'total' => "Total",
+    'to regard' => "Kepada Yth:",
 ];
