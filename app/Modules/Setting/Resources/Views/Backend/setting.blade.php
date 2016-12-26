@@ -52,8 +52,23 @@
 							</div>
 							
 							<div class="form-group">
+								<label class="col-md-12">{!! Lang::get('app.zip code') !!} <span class="help"> *</span></label>
 								<div class="col-md-12">
 									{!! Form::text('zip_code',isset($company) ? $company->zip_code : null,['class' => 'form-control form-control-line','id'=>'zip_code','placeholder'=>lang::get('app.zip code'),'maxlength' => 5]) !!}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-12">{!! Lang::get('app.phone number') !!} <span class="help"> *</span></label>
+								<div class="col-md-12">
+									{!! Form::text('phone_number',isset($company) ? $company->phone_number : null,['class' => 'form-control form-control-line','id'=>'phone_number','placeholder'=>lang::get('app.phone_number'),'maxlength' => 28]) !!}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-12">{!! Lang::get('app.fax number') !!} <span class="help"> *</span></label>
+								<div class="col-md-12">
+									{!! Form::text('fax_number',isset($company) ? $company->fax_number : null,['class' => 'form-control form-control-line','id'=>'fax_number','placeholder'=>lang::get('app.fax_number'),'maxlength' => 28]) !!}
 								</div>
 							</div>
 				

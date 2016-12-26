@@ -68,6 +68,7 @@ class CustomerController extends Controller {
 		$customer_id =  Input::has("id") ? Crypt::decrypt(Input::get("id")) : null;
 		$identity_number = Input::get('identity_number');
 		$name = Input::get('name');
+        $building_address = Input::get('building_address');
 		$address = Input::get('address');
 		$city_id = Input::get('city_id');
 		$zip_code = Input::get('zip_code');
@@ -125,6 +126,7 @@ class CustomerController extends Controller {
 			$customer->identity_number = $identity_number;
 			$customer->customer_group_id  = $customer_group_id;
 			$customer->name  = $name;
+            $customer->building_address  = $building_address;
 			$customer->address  = $address;
 			$customer->city_id  = $city_id;
 			$customer->zip_code  = $zip_code;

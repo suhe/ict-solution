@@ -133,5 +133,18 @@ class PaymentMethodController extends Controller {
 		}
         return Response::json($params);
     }
+
+    public function get_type() {
+        $id = Input::get('id');
+        $payment_method = PaymentMethod::select(['type'])->where('id',$id)->first();
+        if($payment_method) {
+            $params ['success'] =  true;
+            $params ['type'] = $payment_method->type;
+        } else {
+            $params ['success'] =  false;
+            $params ['type'] = "";
+        }
+        return Response::json($params);
+    }
 	
 }

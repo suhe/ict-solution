@@ -35,6 +35,10 @@
 							<td class="col-md-9">{!! $data->name !!}</td>
 						</tr>
 						<tr>
+							<td class="col-md-3">{!! Lang::get('app.building address') !!}</td>
+							<td class="col-md-9">{!! $data->building_address !!}</td>
+						</tr>
+						<tr>
 							<td class="col-md-3">{!! Lang::get('app.address') !!}</td>
 							<td class="col-md-9">{!! $data->address !!}</td>
 						</tr>	

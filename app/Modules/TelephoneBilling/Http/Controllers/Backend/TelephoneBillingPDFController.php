@@ -2,13 +2,14 @@
 namespace App\Modules\TelephoneBilling\Http\Controllers\Backend;
 use App\Modules\TelephoneBilling\TelephoneBilling;
 use App\Modules\TelephoneBilling\TelephoneBillingDetail;
+use App\Modules\TelephoneBilling\TelephoneBillingPayment;
 use Illuminate\Routing\Controller;
 use App\Modules\Company\Company;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Lang;
 use PDF;
-use Symfony\Component\Console\Tests\CustomDefaultCommandApplication;
+
 
 class TelephoneBillingPDFController extends Controller {
     public function billing_statement($id,$output='D') {
@@ -546,6 +547,181 @@ class TelephoneBillingPDFController extends Controller {
         PDF::Cell(184,5,"( ............................. )",0,0,'L',false,'',0,5,'T','M');
 
         PDF::Output("billing-invoice-".$billing->number.".pdf",$output);
+    }
+
+    public function payment_receipt($id,$output='D') {
+        PDF::SetTitle(Lang::get('global.invoice'));
+        PDF::AddPage('P', 'A4');
+        $margin_left = 15;
+        $y = 10;
+
+        /**
+         * Get Company
+         */
+        $company  = Company::leftJoin('cities','cities.id','=','companies.city_id')
+            ->selectRaw("companies.*,cities.name as city")
+            ->where('companies.id',Auth::user()->company_id)
+            ->first();
+
+        /** Billing Customer Info */
+        $billing = TelephoneBillingPayment::join('telephone_billings','telephone_billings.id','=','telephone_billing_payments.telephone_billing_id')
+            ->join('customers','customers.id','=','telephone_billings.customer_id')
+            ->leftJoin('cities','cities.id','=','customers.city_id')
+            ->leftJoin('payment_method','payment_method.id','=','telephone_billing_payments.payment_method_id')
+            ->selectRaw("telephone_billings.number,DATE_FORMAT(telephone_billing_payments.date,'%d/%m/%Y') as payment_date,telephone_billing_payments.total as payment_total")
+            ->selectRaw("customers.name,customers.identity_number,customers.name as customer_name,customers.address as customer_address,cities.name as customer_city,customers.zip_code as customer_zip_code,customers.contact_person as customer_contact_person,customers.contact_position as customer_contact_position")
+            ->selectRaw("payment_method.name as payment_method")
+            ->where(['telephone_billing_payments.id' => Crypt::decrypt($id)])
+            ->first();
+
+        $x=$margin_left;$y=$y;
+        PDF::SetFont('Helvetica','B',10,'','false');
+        PDF::SetXY($x,$y=$y);
+        PDF::Cell(180,10,strtoupper($company->name),0,0,'L',false,'',0,10,'T','M');
+
+        PDF::SetFont('Helvetica','',8,'','false');
+
+        $y = $y + 7;
+        PDF::SetXY($x,$y);
+        PDF::Cell(60,5,strtoupper(Lang::get('pdf.npwp'))." : ".$company->npwp,0,0,'L',false,'',0,5,'T','M');
+
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(60,5,$company->address_1.' '.$company->address_2,0,0,'L',false,'',0,5,'T','M');
+
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(60,5,$company->city.' '.$company->zip_code.' Indonesia. Tel.'.$company->phone_number.'. Fax.'.$company->fax_number,0,0,'L',false,'',0,5,'T','M');
+
+        $x=$margin_left;$y=$y+7;
+        PDF::SetLineStyle(array('width'=>0.8,'color'=>array(0,191,255)));
+        PDF::Line($x,$y,$x+180,$y); //top
+
+        PDF::SetFont('Helvetica','B',13,'','false');
+
+        $y = $y + 7;
+        PDF::setFillColor(0,191,255);
+        PDF::SetXY($x,$y);
+        PDF::SetTextColor(255,255,255);
+        PDF::Cell(60,14,strtoupper(Lang::get('pdf.receipt')),0,0,'C',true,'',0,10,'T','M');
+
+        /**
+         *  Logo
+         */
+        PDF::setJPEGQuality(100);
+        PDF::SetFillColor(255, 255, 255);
+        PDF::Image(asset('shared/img/logo.png'), $x+142, $y, 40, 14, 'PNG', 'http://www.vileo.co.id', '', true, 100, '', false, false, 0, false, false, false);
+
+        PDF::SetTextColor(0,0,0);
+        PDF::SetFont('Helvetica','',8,'','false');
+
+        $y = $y + 20;
+        PDF::SetXY($x,$y);
+        PDF::Cell(30,5,strtoupper(Lang::get('pdf.received from')),0,0,'L',false,'',0,5,'T','M');
+
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(100,5,$billing->customer_name,0,0,'L',false,'',0,5,'T','M');
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(100,5,$billing->customer_address,0,0,'L',false,'',0,5,'T','M');
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(100,5,$billing->customer_city.' '.$billing->customer_zip_code,0,0,'L',false,'',0,5,'T','M');
+
+        $y = $y + 8;
+        PDF::SetXY($x,$y);
+        PDF::Cell(20,5,strtoupper(Lang::get('pdf.attn')),0,0,'L',false,'',0,5,'T','M');
+        PDF::SetXY($x+20,$y);
+        PDF::Cell(5,5,":",0,0,'C',false,'',0,5,'T','M');
+        PDF::SetXY($x+20+5,$y);
+        PDF::Cell(60,5,$billing->customer_contact_person,0,0,'L',false,'',0,5,'T','M');
+        $y = $y + 4;
+        PDF::SetXY($x,$y);
+        PDF::Cell(20,5,strtoupper(Lang::get('pdf.position')),0,0,'L',false,'',0,5,'T','M');
+        PDF::SetXY($x+20,$y);
+        PDF::Cell(5,5,":",0,0,'C',false,'',0,5,'T','M');
+        PDF::SetXY($x+20+5,$y);
+        PDF::Cell(60,5,$billing->customer_contact_position,0,0,'L',false,'',0,5,'T','M');
+
+        //THIS BILLING RECEIPT IS VALID ONLY WHEN THE PAYMENT HAVE ALREADY BEEN RECEIVED
+        $y = $y + 8;
+        PDF::SetXY($x,$y);
+        PDF::Cell(30,5,strtoupper("THIS BILLING RECEIPT IS VALID ONLY WHEN THE PAYMENT HAVE ALREADY BEEN RECEIVED"),0,0,'L',false,'',0,5,'T','M');
+
+        $y = $y + 8;
+        PDF::SetFont('Helvetica','B',9,'','false');
+        PDF::setFillColor(0,191,255);
+        PDF::SetXY($x,$y);
+        PDF::SetTextColor(255,255,255);
+        PDF::Cell(184,8,strtoupper(Lang::get('pdf.description')),0,0,'C',true,'',0,10,'T','M');
+
+        PDF::setTextColor(0,0,0);
+        PDF::SetFont('Helvetica','',8,'','false');
+
+        $y = $y + 10;
+        PDF::SetXY($x,$y);
+        PDF::Cell(130,8,strtoupper("RECEIVED PAYMENT FROM BILLING STATEMENT NO."),0,0,'L',false,'',0,10,'T','M');
+        PDF::SetXY($x+130,$y);
+        PDF::Cell(10,8,"",0,0,'C',false,'',0,10,'T','M');
+        PDF::SetXY($x+130+10,$y);
+        PDF::Cell(44,8,$billing->number,0,0,'R',false,'',0,10,'T','M');
+
+        $y = $y + 7;
+        PDF::SetXY($x,$y);
+        PDF::Cell(130,8,strtoupper(Lang::get('pdf.payment method')),0,0,'L',false,'',0,10,'T','M');
+        PDF::SetXY($x+130,$y);
+        PDF::Cell(10,8,"",0,0,'C',false,'',0,10,'T','M');
+        PDF::SetXY($x+130+10,$y);
+        PDF::Cell(44,8,$billing->payment_method,0,0,'R',false,'',0,10,'T','M');
+
+        $x=$margin_left;$y=$y+10;
+        PDF::SetLineStyle(array('width'=>0.1,'color'=>array(0,0,0)));
+        PDF::Line($x,$y,$x+184,$y); //top
+
+        PDF::SetFont('Helvetica','B',12,'','false');
+
+        $y = $y;
+        PDF::SetXY($x,$y);
+        PDF::Cell(130,8,strtoupper(Lang::get('pdf.total')),0,0,'L',false,'',0,10,'T','M');
+        PDF::SetXY($x+130,$y);
+        PDF::Cell(10,8,strtoupper(Lang::get('pdf.idr')),0,0,'C',false,'',0,10,'T','M');
+        PDF::SetXY($x+130+10,$y);
+        PDF::Cell(44,8,number_format($billing->payment_total,2),0,0,'R',false,'',0,10,'T','M');
+
+        $x=$margin_left;$y=$y+10;
+        PDF::SetLineStyle(array('width'=>0.1,'color'=>array(0,0,0)));
+        PDF::Line($x,$y,$x+184,$y); //top
+
+        PDF::SetFont('Helvetica','',8,'','false');
+
+        $y = $y+2;
+        PDF::SetXY($x,$y);
+        PDF::Cell(130,8,strtoupper(Lang::get('pdf.regard'))." : ".strtoupper(regard_format($billing->payment_total))." RUPIAH",0,0,'L',false,'',0,10,'T','M');
+
+        $y = $y+10;
+        PDF::SetXY($x+140,$y);
+        PDF::Cell(130,8,strtoupper("Tangerang")." , ".$billing->payment_date,0,0,'L',false,'',0,10,'T','M');
+
+        $y = $y+5;
+        PDF::SetXY($x+140,$y);
+        PDF::Cell(130,8,strtoupper($company->name),0,0,'L',false,'',0,10,'T','M');
+
+        PDF::SetFont('Helvetica','U',8,'','false');
+
+        $y = $y+15;
+        PDF::SetXY($x+140,$y);
+        PDF::Cell(130,8,strtoupper("INNA HAKIM"),0,0,'L',false,'',0,10,'T','M');
+
+        PDF::SetFont('Helvetica','',8,'','false');
+
+        $y = $y+4;
+        PDF::SetXY($x+140,$y);
+        PDF::Cell(130,8,strtoupper("DD ICT & MEDIA"),0,0,'L',false,'',0,10,'T','M');
+
+
+        PDF::Output("payment-receipt.pdf",$output);
+
     }
 
 }

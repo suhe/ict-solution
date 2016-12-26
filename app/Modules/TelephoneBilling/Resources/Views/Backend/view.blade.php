@@ -11,12 +11,13 @@
 
 				<div class="btn-group">
 					@if(Role::access('c','telephone-billing'))
-					<a href="{!! url('/telephone-billing/form') !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-plus"></i> {!! Lang::get("app.create") !!}</a>
+                            <a href="{!! url('/telephone-billing/form') !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-plus"></i> {!! Lang::get("app.create") !!}</a>
 					@endif
 					@if(Role::access('u','telephone-billing'))
-							<a href="{!! url('/telephone-billing/export/pdf/statement/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.billing statement") !!}</a>
+                            <a href="{!! url('/telephone-billing/export/pdf/statement/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.billing statement") !!}</a>
 							<a href="{!! url('/telephone-billing/export/pdf/invoice/'.Crypt::encrypt($data->id)) !!}" class="btn btn-rounded btn-primary btn-md"><i class="fa fa-file-pdf-o"></i> {!! Lang::get("app.invoice") !!}</a>
 							<a href="{!! url('/telephone-billing/form/'.Crypt::encrypt($data->id)) !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-pencil"></i> {!! Lang::get("app.edit") !!}</a>
+                            <a href="#" class="btn btn-primary btn-md" data-toggle="modal" data-target="#payment"><i class="fa fa-money"></i> {!! Lang::get("app.make payment") !!}</a>
 					@endif
 
 					<a href="{!! url('/telephone-billing') !!}" class="btn btn-primary btn-rounded btn-md"><i class="fa fa-undo"></i> {!! Lang::get("app.back") !!}</a>
@@ -129,6 +130,7 @@
 				<ul class="nav nav-tabs tabs customtab">
 					<li class="active tab"><a href="#home" data-toggle="tab"> <span class="visible-xs"><i class="fa fa-home"></i></span> <span class="hidden-xs">{!! Lang::get('app.summary') !!}</span> </a> </li>
 					<li class="tab"><a href="#details" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="fa fa-cog"></i></span> <span class="hidden-xs">{!! Lang::get('app.detail') !!}</span> </a> </li>
+					<li class="tab"><a href="#payment-history" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="fa fa-money"></i></span> <span class="hidden-xs">{!! Lang::get('app.payment') !!}</span> </a> </li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="home">
@@ -241,9 +243,115 @@
 							</table>
 						</div>
 					</div>
+
+					<div class="tab-pane" id="payment-history">
+						<div class="table-responsive" id="table-payment-history">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th class="col-md-1">{!! Lang::get('app.date') !!}</th>
+									<th class="col-md-1">{!! Lang::get('app.payment method') !!}</th>
+									<th class="col-md-3">{!! Lang::get('app.bank account') !!}</th>
+									<th class="col-md-3">{!! Lang::get('app.description') !!}</th>
+									<th class="col-md-2 text-center">{!! Lang::get('app.balanced') !!}</th>
+									<th class="col-md-2 text-center">{!! Lang::get('app.saldo') !!}</th>
+									<th class="col-md-1 text-center">***</th>
+								</tr>
+								</thead>
+								<tbody>
+								@php
+									$balanced = $data->total_bill;
+									$saldo = $balanced;
+								@endphp
+								<tr>
+									<td>{!! $row->date !!}</td>
+									<td>{!! $row->payment_method !!}</td>
+									<td>{!! $row->bank_account !!}</td>
+									<td>{!! Lang::get('app.balanced') !!}</td>
+									<td class="text-right">{!! number_format($balanced,2) !!}</td>
+									<td class="text-right">{!! number_format($saldo,2) !!}</td>
+									<td class="text-center">
+
+									</td>
+								</tr>
+								@foreach($telephone_billing_payments as $key => $row)
+									@php
+										$balanced = $row->total;
+										$saldo = $saldo - $balanced;
+									@endphp
+									<tr class="row-{!! $row->id !!}">
+										<td>{!! $row->date !!}</td>
+										<td>{!! $row->payment_method !!}</td>
+										<td>{!! $row->bank_account !!}</td>
+										<td>{!! $row->description !!}</td>
+										<td class="text-right">{!! number_format($balanced ,2) !!}</td>
+										<td class="text-right">{!! number_format($saldo,2) !!}</td>
+										<td class="text-center">
+											<div class="btn-group dropup m-r-10">
+												<button class="btn btn-sm btn-primary btn-rounded dropdown-toggle waves-effect waves-light" type="button" data-toggle="dropdown">
+													<i class="fa fa-pencil"> {!! Lang::get('app.edit') !!}</i>
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a href="{!! url('/telephone-billing/export/pdf/payment-receipt/'.Crypt::encrypt($row->id)) !!}"> {!! Lang::get('app.print') !!}</a></li>
+													@if(Role::access('d','telephone-billing'))
+														<li><a href="#" id="{!! Crypt::encrypt($row->id) !!}" class="delete"> {!! Lang::get('app.delete') !!}</a></li>
+													@endif
+												</ul>
+											</div>
+										</td>
+									</tr>
+								@endforeach
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+
 				</div>	
 			</div>
 		</div>
 	</div>	
 	{!! Form::close() !!}
+    @include('telephone-billing::Backend.payment')
 @endsection
+
+@push("scripts")
+<script type="text/javascript">
+	$(function() {
+		$('.delete').on('click', function(event) {
+			event.preventDefault();
+			$("div#divLoading").addClass('show');
+			var id = $(this).attr("id");
+			$.confirm({
+				title: '{!! Lang::get("app.confirm") !!}',
+				content: '{!! Lang::get("info.confirm delete") !!}',
+				confirm: function(){
+					$.ajax({
+						type  : "post",
+						url   : "{!! url('/telephone-billing/do-delete/payment') !!}",
+						data  : {id:id},
+						dataType: "json",
+						cache : false,
+						beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf_token"]').attr('content'))},
+						success : function(response) {
+							$("div#divLoading").removeClass('show');
+							if(response.success == true) {
+								$(".row-" + response.id).remove();
+								$.alert(response.message);
+							}
+
+						},
+						error : function() {
+							$("div#divLoading").removeClass('show');
+						}
+					});
+				},
+				cancel: function(){
+					$("div#divLoading").removeClass('show');
+				}
+			});
+		});
+	});
+</script>
+@endpush

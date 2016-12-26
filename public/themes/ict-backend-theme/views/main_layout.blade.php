@@ -212,6 +212,11 @@
                     <li> <a href="#" class="waves-effect"><i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">{!! Lang::get('app.sales')!!}<span class="fa arrow"></span></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="{!! url('telephone-billing') !!}">{!! Lang::get('app.telephone billing')!!}</a></li>
+                            <li> <a href="#" class="waves-effect">{!! Lang::get('app.report')!!} <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li> <a href="{!! url('/telephone-billing/report') !!}">{!! Lang::get('app.telephone billing')!!}</a></li>
+                                </ul>
+                            </li>
                             
                         </ul>
                     </li>

@@ -1,9 +1,10 @@
 <?php
 namespace App\Modules\TelephoneBilling\Http\Controllers\Backend;
 use Illuminate\Routing\Controller;
-use App\Modules\Customer\Customer;
+use App\Modules\PaymentMethod\PaymentMethod;
 use App\Modules\TelephoneBilling\TelephoneBilling;
 use App\Modules\TelephoneBilling\TelephoneBillingDetail;
+use App\Modules\TelephoneBilling\TelephoneBillingPayment;
 use Auth;
 use Cart;
 use Config;
@@ -39,6 +40,28 @@ class TelephoneBillingController extends Controller {
 		->where('telephone_billings.id',$id)
 		->first();
 
+		return Theme::view('telephone-billing::Backend.view',[
+			'page_title' => Lang::get('app.telephone billing').' '.$get_data->number,
+			'data' => $get_data,
+			'details' => TelephoneBillingDetail::where(['telephone_billing_id' =>$id])->get(),
+            'telephone_billing_payments' => TelephoneBillingPayment::leftJoin('payment_method','payment_method.id','=','telephone_billing_payments.payment_method_id')
+                ->leftJoin('bank_accounts','bank_accounts.id','=','telephone_billing_payments.bank_account_id')
+                ->where(['telephone_billing_payments.telephone_billing_id' => $id])
+                ->selectRaw("telephone_billing_payments.id,DATE_FORMAT(telephone_billing_payments.date,'%d/%m/%Y') as date,payment_method.name as payment_method,CONCAT(bank_accounts.account_no,' ',bank_accounts.account_name) as bank_account,telephone_billing_payments.description,telephone_billing_payments.total")
+                ->get(),
+		]);
+	}
+	
+	public function form($id = 0) {
+		$id = $id ? Crypt::decrypt($id) : null;
+		$get_data = TelephoneBilling::leftJoin('customers','customers.id','telephone_billings.customer_id')
+		->leftJoin('cities','cities.id','customers.city_id')
+		->leftJoin('payment_method','payment_method.id','telephone_billings.payment_method_id')
+		->selectRaw("telephone_billings.*,customers.name as customer_name,customers.address as customer_address,cities.name as customer_city,customers.zip_code as customer_zip_code,contact_person,contact_position,customers.identity_number as customer_id")
+		->selectRaw("payment_method.name as payment_method")
+		->where('telephone_billings.id',$id)
+		->first();
+
         if($get_data) {
             Cart::instance('line-form')->destroy(); //destroy first
             $get_data_details = TelephoneBillingDetail::where(['telephone_billing_id' => $get_data->id])->get();
@@ -67,23 +90,6 @@ class TelephoneBillingController extends Controller {
         } else {
             Cart::instance('line-form')->destroy();
         }
-		
-		return Theme::view('telephone-billing::Backend.view',[
-			'page_title' => Lang::get('app.telephone billing').' '.$get_data->number,
-			'data' => $get_data,
-			'details' => TelephoneBillingDetail::where(['telephone_billing_id' =>$id])->get(),
-		]);
-	}
-	
-	public function form($id = 0) {
-		$id = $id ? Crypt::decrypt($id) : null;
-		$get_data = TelephoneBilling::leftJoin('customers','customers.id','telephone_billings.customer_id')
-		->leftJoin('cities','cities.id','customers.city_id')
-		->leftJoin('payment_method','payment_method.id','telephone_billings.payment_method_id')
-		->selectRaw("telephone_billings.*,customers.name as customer_name,customers.address as customer_address,cities.name as customer_city,customers.zip_code as customer_zip_code,contact_person,contact_position,customers.identity_number as customer_id")
-		->selectRaw("payment_method.name as payment_method")
-		->where('telephone_billings.id',$id)
-		->first();
 		
 		return Theme::view('telephone-billing::Backend.form',[
 			'page_title' => Lang::get('app.telephone billing').' '.($get_data ? $get_data->number : null),
@@ -470,6 +476,143 @@ class TelephoneBillingController extends Controller {
         }
 
         return Response::json($lists);
+    }
+
+    public function do_update_payment() {
+        $telephone_billing_id =  Input::has("id") ? Crypt::decrypt(Input::get("id")) : null; //telephone billing
+        $date = preg_replace('!(\d+)/(\d+)/(\d+)!', '\3-\2-\1', Input::get('date'));
+        $payment_method_id = Input::get('payment_method_id');
+        $bank_account_id = Input::get('bank_account_id');
+        $payment_type = "Cash";
+        $total = Input::get('total');
+        $description = Input::get('description');
+
+        $field = array (
+            'telephone_billing_id' => $telephone_billing_id,
+            'date' => $date,
+            'payment_method_id' => $payment_method_id,
+            'bank_account_id' => $bank_account_id,
+            'total' => $total,
+        );
+
+        $rules = array (
+            'telephone_billing_id' => "required",
+            'date' => "required",
+            'payment_method_id' => "required",
+            'bank_account_id' => "required",
+            'total' => "required",
+        );
+
+        $validate = Validator::make($field,$rules);
+
+        if($validate->fails()) {
+            $params = array(
+                'success' => false,
+                'message' => $validate->getMessageBag()->toArray()
+            );
+        }  else {
+            //init payment method
+            $payment_method = PaymentMethod::where(['id'=>$payment_method_id])->first();
+            if($payment_method_id) {
+                if($payment_method->type == 'Non-Cash') {
+                    $bank_account_id = $bank_account_id;
+                } else {
+                    $bank_account_id = 0;
+                }
+            } else {
+                $bank_account_id = 0;
+            }
+            //save / updated master
+            $telephone_billing_payment = new TelephoneBillingPayment();
+            $telephone_billing_payment->telephone_billing_id = $telephone_billing_id;
+            $telephone_billing_payment->created_at = date("Y-m-d H:i:s");
+            $telephone_billing_payment->created_by = Auth::user()->id;
+            $telephone_billing_payment->date = $date;
+            $telephone_billing_payment->payment_method_id = $payment_method_id;
+            $telephone_billing_payment->bank_account_id = $bank_account_id;
+            $telephone_billing_payment->total = $total;
+            $telephone_billing_payment->description = $description;
+            $telephone_billing_payment->save();
+
+            //save / updated master
+            $sum_total_payment = TelephoneBillingPayment::where(['telephone_billing_id' => $telephone_billing_id])->sum('total');
+            $telephone_billing = TelephoneBilling::where(['id' => $telephone_billing_id])->first();
+            if($sum_total_payment >= $telephone_billing->total_bill) {
+                $status = 2; //closed
+            } else {
+                $status = 1; //process
+            }
+            TelephoneBilling::where(['id' => $telephone_billing_id])->update(['total_payment' => $sum_total_payment,'status' => $status]);
+            //update params json
+            $params = array(
+                'success' => true,
+                'message' => Lang::get('info.update successfully'),
+                'redirect' => url('telephone-billing/view/'.Crypt::encrypt($telephone_billing_payment->telephone_billing_id)),
+            );
+        }
+
+        return Response::json($params);
+    }
+
+    public function do_delete_payment() {
+        $id = Crypt::decrypt(Input::get('id'));
+        $data = TelephoneBillingPayment::where(['id' => $id])->first();
+        if($data) {
+            /**
+             * Batch Delete
+             */
+            $status = null;
+            $telephone_billing = TelephoneBilling::where(['id' => $data->telephone_billing_id])->first();
+            $status = $telephone_billing->status;
+            TelephoneBillingPayment::where(['id' => $id])->delete(); //delete payment
+            $sum_total_payment = TelephoneBillingPayment::where(['telephone_billing_id' => $telephone_billing->id])->sum('total');
+
+            if($sum_total_payment >= $telephone_billing->total_bill) {
+                $status = 2; //closed
+            } else {
+                $statsu = 1; //process
+            }
+
+            //update payment from master billing
+            TelephoneBilling::where(['id' => $telephone_billing->id])->update(['total_payment' => $sum_total_payment,'status' => $status]);
+            $params = [
+                'success' => true,
+                'id' => $id,
+                'message' => Lang::get('info.delete successfully'),
+            ];
+        } else {
+            $params = [
+                'success' => false,
+                'id' => 0 ,
+                'message' => Lang::get('info.delete failed'),
+            ];
+        }
+
+        return Response::json($params);
+    }
+
+    public function report() {
+        return Theme::view('telephone-billing::Backend.report',[
+            'page_title' => Lang::get('app.telephone billing'),
+        ]);
+    }
+
+    public function report_billing_details(TelephoneBilling $telephone_billing) {
+        $telephone_billing = $telephone_billing
+            ->join('customers','customers.id','=','telephone_billings.customer_id')
+            ->whereRaw("CONCAT(number,' ',customers.identity_number,' ',customers.name) LIKE '%".Request::get('query')."%'");
+        if(Request::get('type') == 1) {
+            $telephone_billing = $telephone_billing->whereRaw("due_date >= '".preg_replace('!(\d+)/(\d+)/(\d+)!', '\3-\2-\1',Request::get('date_from'))."' AND due_date <= '".preg_replace('!(\d+)/(\d+)/(\d+)!', '\3-\2-\1', Request::get('date_to'))."'");
+        } else {
+            $telephone_billing = $telephone_billing->whereRaw("print_date >= '".preg_replace('!(\d+)/(\d+)/(\d+)!', '\3-\2-\1',Request::get('date_from'))."' AND print_date <= '".preg_replace('!(\d+)/(\d+)/(\d+)!', '\3-\2-\1', Request::get('date_to'))."'");
+        }
+
+        $telephone_billing = $telephone_billing->selectRaw("telephone_billings.*,customers.name as customer_name,customers.identity_number");
+
+        return Theme::view('telephone-billing::Backend.Reports.billing-details',[
+            'page_title' => Lang::get('app.billing details report'),
+            'reports' => $telephone_billing->get(),
+        ]);
     }
 
 }

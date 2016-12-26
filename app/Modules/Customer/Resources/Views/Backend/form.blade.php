@@ -35,6 +35,12 @@
                     </div>
                 </div>
 				<div class="form-group">
+					<label class="col-md-12">{!! Lang::get('app.building address') !!} <span class="help"> </span></label>
+					<div class="col-md-12">
+						{!! Form::textarea('building_address',isset($data) ? $data->building_address : null,['rows'=>3,'class' => 'form-control form-control-line','id'=>'building_address','placeholder'=>lang::get('app.building address'),'maxlength' => 255]) !!}
+					</div>
+				</div>
+				<div class="form-group">
                     <label class="col-md-12">{!! Lang::get('app.address') !!} <span class="help"> *</span></label>
                     <div class="col-md-12">
 						{!! Form::textarea('address',isset($data) ? $data->address : null,['rows'=>3,'class' => 'form-control form-control-line','id'=>'address','placeholder'=>lang::get('app.address'),'maxlength' => 255]) !!}

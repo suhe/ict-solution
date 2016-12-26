@@ -33,6 +33,8 @@ class SettingController extends Controller {
 		$address_2 = Input::get('address_2');
 		$city_id = Input::get('city_id');
 		$zip_code = Input::get('zip_code');
+        $phone_number = Input::get('phone_number');
+        $fax_number = Input::get('fax_number');
 		
         $field = array (
 			'name' => $name,
@@ -40,6 +42,8 @@ class SettingController extends Controller {
 			'address_1' => $address_1,
 			'city_id' => $city_id,
 			'zip_code' => $zip_code,
+            'phone_number' => $phone_number,
+            'fax_number' => $fax_number,
         );
 
         $rules = array (
@@ -48,6 +52,8 @@ class SettingController extends Controller {
 			'address_1' => "required",
 			'city_id' => "required",
 			'zip_code' => "required",
+            'phone_number' => "required",
+            'fax_number' => "required",
         );
 
         $validate = Validator::make($field,$rules);
@@ -66,6 +72,8 @@ class SettingController extends Controller {
 			$company->address_2  = $address_2;
 			$company->city_id  = $city_id;
 			$company->zip_code = $zip_code;
+            $company->phone_number  = $phone_number;
+            $company->fax_number = $fax_number;
 			$company->updated_at = date("Y-m-d H:i:s");
 			$company->updated_by = Auth::user()->id;
 			$company->save();

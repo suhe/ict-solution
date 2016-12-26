@@ -25,5 +25,10 @@ Route::group(['prefix' => 'telephone-billing','middleware'=>['is_logged']], func
     Route::get('/get/customer', ['uses' => 'Backend\TelephoneBillingController@get_customer']);
     Route::get('/export/pdf/invoice/{slug}', ['uses' => 'Backend\TelephoneBillingPDFController@billing_invoice']);
     Route::get('/export/pdf/statement/{slug}', ['uses' => 'Backend\TelephoneBillingPDFController@billing_statement']);
-
+    Route::post('/do-update/payment', ['uses' => 'Backend\TelephoneBillingController@do_update_payment','middleware' => ['role_update:telephone-billing']]);
+    Route::post('/do-delete/payment', ['uses' => 'Backend\TelephoneBillingController@do_delete_payment','middleware' => ['role_delete:telephone-billing']]);
+    Route::get('/export/pdf/payment-receipt/{slug}', ['uses' => 'Backend\TelephoneBillingPDFController@payment_receipt']);
+    Route::get('/report', ['uses' => 'Backend\TelephoneBillingController@report']);
+    Route::get('/report/billing-details', ['uses' => 'Backend\TelephoneBillingController@report_billing_details']);
+    Route::get('/export/excel/billing-details', ['uses' => 'Backend\TelephoneBillingExcelController@billing_details','middleware' => ['role_create:telephone-billing']]);
 });

@@ -19,4 +19,6 @@ Route::group(['prefix' => 'payment-method','middleware'=>['is_logged']], functio
 	Route::get('/form/{slug}', ['uses' => 'Backend\PaymentMethodController@form','middleware' => ['role_update:payment-method']]);
 	Route::post('/do-update', ['uses' => 'Backend\PaymentMethodController@do_update','middleware' => ['role_update:payment-method']]);
 	Route::post('/do-delete', ['uses' => 'Backend\PaymentMethodController@do_delete','middleware' => ['role_delete:payment-method']]);
+    Route::get('get/type',['uses' => 'Backend\PaymentMethodController@get_type']);
+
 });
