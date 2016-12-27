@@ -22,7 +22,7 @@ class TelephoneBilling extends Model{
         $starting_number = digit_format($starting_number);
         $month = date('m');
         $year = date('Y');
-        return $invoice_number = $prefix_number.'/'.romawi_format($month).'/'.$year.'/'.$starting_number;
+        return $invoice_number = $starting_number.$prefix_number.'/'.romawi_format($month).'/'.$year;
     }
 
 }
