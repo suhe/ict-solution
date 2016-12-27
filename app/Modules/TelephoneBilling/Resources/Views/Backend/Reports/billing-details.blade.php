@@ -1,10 +1,10 @@
 @extends('ict-backend-theme::main_layout',['title' => $page_title])
 @section('content')
     <div class="row bg-title">
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
             <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
-        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <div class="col-lg-10 col-sm-8 col-md-8 col-xs-12">
             {!! Form::open(['url' => '/telephone-billing/report/billing-details','method'=>'GET','class'=>'form-inline pull-right']) !!}
             <div class="form-group">
                 <label>{!! Lang::get('app.search') !!}</label>

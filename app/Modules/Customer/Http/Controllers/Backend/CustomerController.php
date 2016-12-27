@@ -19,8 +19,9 @@ class CustomerController extends Controller {
 	public function index(Customer $customer) {
 		return Theme::view('customer::Backend.index',[
 			'page_title' => Lang::get('app.customer'),
-			'customers' => $customer
-				->whereRaw("name LIKE '%".Request::get("query")."%'")
+			'customers' => $customer->leftJoin('cities','cities.id','=','customers.city_id')
+                ->selectRaw("customers.*,cities.name as city")
+				->whereRaw("CONCAT(identity_number,' ',customers.name,' ',cities.name) LIKE '%".Request::get("query")."%'")
 				->sortable(['identity_number' => 'asc'])
 				->paginate(Config::get('site.limit_pagination')),
 			
@@ -82,7 +83,7 @@ class CustomerController extends Controller {
 			'name' => $name,
 			'address' => $address,
 			'city_id' => $city_id,
-			'zip_code' => $zip_code,
+			//'zip_code' => $zip_code,
 			'customer_group_id' => $customer_group_id,
 			'contact_person' => $contact_person,
 			'phone_number' => $phone_number,
@@ -94,7 +95,7 @@ class CustomerController extends Controller {
 			'name' => "required",
 			'address' => "required",
 			'city_id' => "required",
-			'zip_code' => "required",
+			//'zip_code' => "required",
 			'customer_group_id' => "required",
 			'contact_person' => "required",
 			'phone_number' => "required",

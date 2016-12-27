@@ -3848,9 +3848,13 @@ table.focus-on tbody tr.focused td {
 }
 /* Login- register pages */
 .login-register {
-  background: url("../img/login-register.jpg") no-repeat center center / cover !important;
+  background: url("../img/login-register.jpg") no-repeat;
   height: 100%;
   position: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .login-box {
   background: #ffffff;

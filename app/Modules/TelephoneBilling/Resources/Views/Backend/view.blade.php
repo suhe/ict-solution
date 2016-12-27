@@ -2,11 +2,11 @@
 @section('content')
 	{!! Form::open(['url' => '#','role' => 'form','id'=>'update_form','class' => 'form-material form-horizontal']) !!}
 	<div class="row bg-title">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
           <h4 class="page-title"> {!! $page_title !!}</h4>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-7">
 			<div class="pull-right">
 
 				<div class="btn-group">

@@ -69,7 +69,7 @@ class CustomerGroupController extends Controller {
         );
 
         $rules = array (
-			'name' => "required",
+            'name' => (!$customer_group_id ? "required|unique:customer_groups,name" : "required|unique:customer_groups,name,$customer_group_id"),
         );
 
         $validate = Validator::make($field,$rules);

@@ -64,7 +64,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
-                    <li class="dropdown"> 
+                    <!--<li class="dropdown">
 						<a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-envelope"></i>
 							<div class="notify"><span class="heartbit"></span><span class="point"></span></div>
 						</a>
@@ -100,10 +100,11 @@
                                 <a class="text-center" href="javascript:void(0);"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
                             </li>
                         </ul>
-                        <!-- /.dropdown-messages -->
-                    </li>
+                        <!--- dropdown-messages
+                    </li> -->
                     <!-- /.dropdown -->
-                    <li class="dropdown"> 
+                    <!--
+                    <li class="dropdown">
 						<a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><i class="icon-note"></i>
 							<div class="notify"><span class="heartbit"></span><span class="point"></span></div>
 						</a>
@@ -156,13 +157,13 @@
                                 <a class="text-center" href="#"> <strong>See All Tasks</strong> <i class="fa fa-angle-right"></i> </a>
                             </li>
                         </ul>
-                        <!-- /.dropdown-tasks -->
-                    </li>
+                        <!-- /.dropdown-tasks
+                    </li>-->
                     <!-- /.dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="{!! Theme::asset('img/avatar.png') !!}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">{!! Auth::user()->first_name !!}</b> </a>
                         <ul class="dropdown-menu dropdown-user animated flipInY">
-                            <li><a href="{!! url('/profile') !!}"><i class="ti-user"></i> {!! Lang::get('app.my profile') !!}</a></li>
+                            <li><a href="{!! url('/profile') !!}"><i class="fa fa-user"></i> {!! Lang::get('app.my profile') !!}</a></li>
                             <!--<li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
                             <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
                             <li role="separator" class="divider"></li>
@@ -198,7 +199,7 @@
                     </li>
                     <li> <a href="index.html" class="waves-effect active"><i class="linea-icon linea-basic fa-fw" data-icon="v"></i> <span class="hide-menu"> {!! Lang::get('app.dashboard')!!} <span class="fa arrow"></span> </span></a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="{!! Lang::get('app.dashboard')!!}">{!! Lang::get('app.dashboard')!!} </a> </li>
+                            <li> <a href="{!! url('/dashboard') !!}">{!! Lang::get('app.dashboard')!!} </a> </li>
                         </ul>
                     </li>
                     
