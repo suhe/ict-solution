@@ -16,7 +16,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="home">
-						{!! Form::open(['url' => '/profile/do-update','role' => 'form','id'=>'update_profile_form','class' => 'form-material form-horizontal']) !!}
+						{!! Form::open(['url' => 'user/profile/do-update','role' => 'form','id'=>'update_profile_form','class' => 'form-material form-horizontal','method' => 'POST']) !!}
 							<div class="form-group">
 								<label class="col-md-12">{!! Lang::get('app.first name') !!}</label>
 								<div class="col-md-12">

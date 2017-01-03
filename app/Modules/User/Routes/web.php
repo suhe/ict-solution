@@ -21,4 +21,5 @@ Route::group(['prefix' => 'user','middleware'=>['is_logged']], function () {
 	Route::post('/do-delete', ['uses' => 'Backend\UserController@do_delete','middleware' => ['role_delete:user']]);
 	Route::get('/reset-password/{slug}', ['uses' => 'Backend\UserController@reset_password','middleware' => ['role_update:user']]);
 	Route::post('/do-reset-password', ['uses' => 'Backend\UserController@do_reset_password','middleware' => ['role_update:user']]);
+	Route::get('/profile/do-update', ['uses' => 'Backend\ProfileController@do_update']);
 });
